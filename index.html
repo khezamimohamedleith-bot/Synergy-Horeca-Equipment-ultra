@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="true">
+<meta name="MobileOptimized" content="width">
+<meta name="theme-color" content="#08081A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Horeca">
+<link rel="manifest" href="manifest.json">
+<title>Synergy Horeca V5 ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08081A;--bg2:#0E0E26;--bg3:#13132E;
+  --card:rgba(255,255,255,.05);
+  --gold:#D4880A;--gold2:#F5A623;--gold3:#FFD166;--goldb:rgba(212,136,10,.15);
+  --green:#22C55E;--green2:rgba(34,197,94,.15);
+  --red:#EF4444;--red2:rgba(239,68,68,.15);
+  --blue:#60A5FA;--blue2:rgba(96,165,250,.15);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#F1F0EA;--text2:rgba(241,240,234,.6);--text3:rgba(241,240,234,.35);
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+#splash{position:fixed;inset:0;z-index:9000;background:radial-gradient(ellipse at 30% 40%,#1A1040,#08081A 65%,#000510);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s,transform .9s}
+#splash.out{opacity:0;transform:scale(1.05);pointer-events:none}
+.sp-orb{width:100px;height:100px;border-radius:24px;background:linear-gradient(145deg,#1A0F00,#8B5A00,#D4880A,#F5A623,#FFD166);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 0 80px rgba(212,136,10,.6),inset 0 1px 0 rgba(255,255,255,.15);animation:orbP 3s ease-in-out infinite;margin-bottom:24px}
+@keyframes orbP{0%,100%{box-shadow:0 0 80px rgba(212,136,10,.5)}50%{box-shadow:0 0 140px rgba(255,209,102,.7)}}
+.sp-t{font-family:'Playfair Display',serif;font-size:26px;color:#fff;text-align:center}
+.sp-s{font-size:10px;color:var(--gold2);letter-spacing:3px;margin-top:5px;font-weight:500}
+.sp-bar{width:200px;height:2px;background:rgba(255,255,255,.08);border-radius:1px;margin-top:36px;overflow:hidden}
+.sp-f{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));animation:spF 5s ease forwards}
+@keyframes spF{from{width:0}to{width:100%}}
+#main{display:none;position:fixed;inset:0;flex-direction:column;overflow:hidden}
+#main.on{display:flex;animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#cat-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg-sl{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 2.5s ease}
+.bg-sl.on{opacity:1}
+.bg-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,26,.94),rgba(8,8,26,.82) 40%,rgba(8,8,26,.94))}
+#inst-b{display:none;position:fixed;top:0;left:0;right:0;z-index:8000;padding:calc(var(--safe-t)+10px) 12px 10px;background:linear-gradient(135deg,#1A0F00,#7B4800);border-bottom:1px solid var(--gold)}
+.ib-row{display:flex;align-items:center;gap:10px}
+#ib-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;border:none;border-radius:11px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+#ib-x{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#ios-g{display:none;margin-top:10px;background:rgba(0,0,0,.4);border-radius:10px;padding:10px;font-size:12px;color:rgba(255,255,255,.85);line-height:1.8}
+#hdr{position:relative;z-index:10;flex-shrink:0;background:rgba(8,8,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:calc(var(--safe-t)+8px) 12px 8px}
+.hdr-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.hdr-brand{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold2);font-style:italic}
+.hdr-time{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-1px;cursor:pointer}
+.hdr-date{font-size:10px;color:var(--text3);cursor:pointer}
+.hdr-icons{display:flex;gap:6px}
+.hdr-ico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:0.5px solid var(--border);transition:all .15s}
+.hdr-ico:active{transform:scale(.88)}
+.pray-blink{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3);animation:pB 2s ease-in-out infinite}
+@keyframes pB{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 4px rgba(34,197,94,.1)}}
+.pray-pill{background:rgba(34,197,94,.12);border:0.5px solid rgba(34,197,94,.3);border-radius:12px;padding:3px 8px;font-size:9px;font-weight:600;color:var(--green);cursor:pointer;animation:pB 2s ease-in-out infinite}
+.about-strip{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:0.5px solid var(--border);margin-top:5px}
+.about-ava{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;cursor:pointer}
+.about-info{flex:1;min-width:0;cursor:pointer}
+.about-name{font-size:10px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.about-sub{font-size:8px;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.soc-row{display:flex;gap:4px}
+.soc-ico{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;border:0.5px solid var(--border);transition:all .15s}
+.soc-ico:active{transform:scale(.85)}
+#top-banner{flex-shrink:0;background:rgba(8,8,26,.85);border-bottom:0.5px solid var(--border);display:flex;position:relative;z-index:9}
+.tb-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;cursor:pointer;transition:all .15s;border-right:0.5px solid var(--border)}
+.tb-item:last-child{border-right:none}
+.tb-item:active{background:rgba(255,255,255,.06)}
+.tb-ico-b{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.tb-lbl{font-size:8px;font-weight:500;color:var(--text3)}
+.tb-item.on .tb-lbl{color:var(--gold2)}
+.tb-item.on .tb-ico-b{box-shadow:0 0 0 1.5px var(--gold2) inset}
+#body-zone{flex:1;display:flex;overflow:hidden;position:relative;z-index:1}
+#left-panel{width:50px;background:rgba(8,8,26,.88);border-right:0.5px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:8px 3px;gap:5px;flex-shrink:0;overflow-y:auto;position:relative;z-index:5}
+.lp-item{width:44px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 3px;cursor:pointer;border-radius:11px;transition:all .15s;border:0.5px solid transparent}
+.lp-item:active{transform:scale(.9)}
+.lp-item.on{background:rgba(212,136,10,.15);border-color:rgba(212,136,10,.35)}
+.lp-ico{font-size:18px}
+.lp-lbl{font-size:7px;font-weight:600;color:var(--text3);text-align:center;line-height:1.2}
+.lp-item.on .lp-lbl{color:var(--gold2)}
+#center-zone{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+.cc{padding:10px 10px calc(10px + var(--safe-b));min-height:100%}
+#right-panel{width:50px;background:rgba(8,8,26,.88);border-left:0.5px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:8px 3px;gap:5px;flex-shrink:0;overflow-y:auto;position:relative;z-index:5}
+.rp-item{width:44px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 3px;cursor:pointer;border-radius:11px;transition:all .15s;border:0.5px solid transparent}
+.rp-item:active{transform:scale(.9)}
+.rp-item.on{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.35)}
+.rp-ico{font-size:18px}
+.rp-lbl{font-size:7px;font-weight:600;color:var(--text3);text-align:center;line-height:1.2}
+.rp-item.on .rp-lbl{color:#A78BFA}
+.bonus-tag{background:rgba(245,166,35,.2);border:0.5px solid rgba(245,166,35,.4);border-radius:3px;padding:1px 3px;font-size:5px;color:var(--gold2);font-weight:700}
+#bot-bar{flex-shrink:0;background:rgba(8,8,26,.95);border-top:0.5px solid var(--border);display:flex;padding-bottom:var(--safe-b)}
+.bot-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;cursor:pointer;transition:all .15s}
+.bot-item:active{opacity:.7}
+.bot-ico{font-size:20px}
+.bot-lbl{font-size:8px;font-weight:600;color:var(--text3)}
+.bot-item.on .bot-lbl{color:var(--gold2)}
+.bot-dot{width:4px;height:4px;border-radius:50%;background:var(--gold2);display:none}
+.bot-item.on .bot-dot{display:block}
+.fpanel{position:fixed;inset:0;z-index:400;display:none;flex-direction:column;background:var(--bg2)}
+.fpanel.on{display:flex;animation:pS .25s cubic-bezier(.25,0,.3,1)}
+@keyframes pS{from{opacity:.3;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+.phdr{flex-shrink:0;height:calc(var(--safe-t)+54px);display:flex;align-items:flex-end;padding:0 14px 11px;gap:11px;background:rgba(8,8,26,.95);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border)}
+.pbk{width:34px;height:34px;border-radius:17px;background:rgba(255,255,255,.06);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:16px}
+.pttl{font-family:'Playfair Display',serif;font-size:16px;color:var(--text);flex:1}
+.pbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 14px;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn:active{transform:scale(.95)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;box-shadow:0 4px 14px rgba(212,136,10,.3)}
+.btn-green{background:var(--green);color:#000}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text2);border:0.5px solid var(--border)}
+.btn-full{width:100%}
+.btn-sm{padding:6px 12px;font-size:11px;border-radius:9px}
+.btn-lg{padding:13px 16px;font-size:14px;border-radius:13px}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:9px;font-weight:700;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;background:rgba(255,255,255,.05);border:0.5px solid var(--border);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold2);background:rgba(212,136,10,.05)}
+.field select option{background:var(--bg3)}
+.field textarea{resize:none;min-height:70px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:14px;overflow:hidden}
+.card-hd{padding:11px 13px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-bd{padding:11px 13px}
+.card-t{font-size:12px;font-weight:600;color:var(--text)}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700}
+.b-pret{background:rgba(34,197,94,.15);color:var(--green);border:0.5px solid rgba(34,197,94,.25)}
+.b-urg{background:var(--goldb);color:var(--gold2);border:0.5px solid rgba(212,136,10,.25)}
+.b-pri{background:var(--blue2);color:var(--blue);border:0.5px solid rgba(96,165,250,.25)}
+.b-enc{background:rgba(255,255,255,.08);color:var(--text2);border:0.5px solid var(--border)}
+.b-per{background:var(--red2);color:var(--red);border:0.5px solid rgba(239,68,68,.2)}
+.sc{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:14px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden;cursor:pointer;transition:all .15s}
+.sc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px}
+.sc.pret::before{background:var(--green)}.sc.urg::before{background:var(--gold2)}.sc.pri::before{background:var(--blue)}.sc:active{background:rgba(255,255,255,.07)}
+.prog{height:2px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden;margin-top:7px}
+.prog-f{height:100%;border-radius:1px;background:linear-gradient(90deg,var(--gold),var(--gold3))}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:flex-end;backdrop-filter:blur(10px)}
+.overlay.on{display:flex;animation:fadeIn .2s}
+.sheet{background:var(--bg2);border-radius:22px 22px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding-bottom:calc(18px + var(--safe-b));border-top:0.5px solid var(--border)}
+.sh-h{width:34px;height:3px;background:var(--border2);border-radius:2px;margin:11px auto 0}
+.sh-t{padding:12px 16px 11px;border-bottom:0.5px solid var(--border);font-family:'Playfair Display',serif;font-size:16px;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.sh-x{color:var(--text3);cursor:pointer;width:26px;height:26px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+.sh-b{padding:14px 16px}
+.dialog{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(14px)}
+.dialog.on{display:flex;animation:fadeIn .2s}
+.dlg{background:var(--bg3);border-radius:20px;padding:24px 20px 20px;width:100%;max-width:290px;border:0.5px solid var(--border);animation:popIn .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.dlg-t{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);text-align:center;margin-bottom:6px}
+.dlg-s{font-size:12px;color:var(--text2);text-align:center;line-height:1.6;margin-bottom:18px}
+.dlg-btns{display:flex;gap:8px}
+.itabs{display:flex;background:rgba(255,255,255,.03);border-bottom:0.5px solid var(--border);flex-shrink:0}
+.itab{flex:1;padding:10px 4px;text-align:center;font-size:10px;font-weight:600;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;transition:all .2s}
+.itab.on{color:var(--gold2);border-bottom-color:var(--gold2)}
+#toasts{position:fixed;top:calc(var(--safe-t)+70px);left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:7px;pointer-events:none;min-width:180px;max-width:86vw}
+.toast{background:rgba(14,14,38,.97);color:var(--text);padding:10px 16px;border-radius:13px;font-size:11px;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.5);text-align:center;animation:toastIn .25s ease;border:0.5px solid var(--border);position:relative;overflow:hidden}
+.toast::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold2)}
+.toast.g::before{background:var(--green)}.toast.r::before{background:var(--red)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-8px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.li{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:13px;padding:12px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all .15s;text-decoration:none;margin-bottom:8px}
+.li:active{background:rgba(255,255,255,.08)}
+.li-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.li-name{font-size:13px;font-weight:600;color:var(--text)}
+.li-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:13px}
+.si{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:7px 4px;border-radius:11px;transition:all .15s}
+.si:active{transform:scale(.88);background:rgba(255,255,255,.06)}
+.si-b{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.si-l{font-size:9px;color:var(--text2);font-weight:500}
+.ct-row{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:all .15s}
+.ct-row:active{background:rgba(255,255,255,.04)}
+.avatar{width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+#cat-full{position:fixed;inset:0;z-index:600;display:none;flex-direction:column;background:#000}
+#cat-full.on{display:flex}
+.cf-sl{position:absolute;inset:0;display:none;flex-direction:column}
+.cf-sl.on{display:flex}
+.cf-img{flex:1;object-fit:cover;width:100%;background:var(--bg3)}
+.cf-info{background:linear-gradient(to top,rgba(0,0,0,.97),rgba(0,0,0,.5));padding:18px 16px calc(16px + var(--safe-b));flex-shrink:0}
+.cf-close{position:absolute;top:calc(var(--safe-t)+12px);right:14px;z-index:10;width:34px;height:34px;border-radius:17px;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;border:0.5px solid rgba(255,255,255,.15);font-size:16px;color:#fff}
+.cf-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 10px;pointer-events:none}
+.cf-nb{width:40px;height:40px;border-radius:20px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;border:0.5px solid rgba(255,255,255,.15);font-size:18px;color:#fff}
+.cf-dots{position:absolute;bottom:140px;left:0;right:0;display:flex;justify-content:center;gap:5px}
+.cf-dot{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.3);transition:all .25s}
+.cf-dot.on{width:18px;background:#fff}
+#m-doc{position:fixed;inset:0;background:var(--bg);z-index:450;display:none;flex-direction:column}
+.msr{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.ms{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:11px;padding:10px;text-align:center;cursor:pointer;transition:all .15s}
+.ms:active{background:rgba(255,255,255,.08)}
+.ms-v{font-size:18px;font-weight:700;letter-spacing:-.5px}
+.ms-l{font-size:8px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+.chart12{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px}
+.bars12{display:flex;align-items:flex-end;gap:3px;height:70px;margin-top:10px}
+.b12{flex:1;border-radius:2px 2px 0 0;min-height:3px}
+.b12.pos{background:linear-gradient(to top,var(--gold),var(--gold3))}
+.b12.neg{background:rgba(239,68,68,.3)}
+.b12.cur{filter:brightness(1.3)}
+.m12{display:flex;gap:3px;margin-top:3px}
+.m12 span{flex:1;text-align:center;font-size:7px;color:var(--text3)}
+.best-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.best-card{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:13px;padding:11px}
+.best-lbl{font-size:8px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.best-item{font-size:10px;color:var(--text);line-height:1.4}
+.best-val{font-size:9px;color:var(--gold2);font-weight:700}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.pt{aspect-ratio:1;object-fit:cover;background:rgba(255,255,255,.05);cursor:pointer}
+.pr-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border)}
+.pr-row:last-child{border-bottom:none}
+.pr-name{font-size:13px;font-weight:600;color:var(--text)}
+.pr-ar{font-family:'Amiri',serif;font-size:11px;color:var(--text3);margin-top:1px}
+.pr-time{font-size:17px;font-weight:700;letter-spacing:-.5px}
+.calc-d{background:rgba(255,255,255,.04);border-radius:16px;padding:22px 16px;margin:12px;text-align:right;border:0.5px solid var(--border)}
+.calc-e{font-size:12px;color:var(--text3);min-height:16px}
+.calc-v{font-size:40px;font-weight:300;color:var(--text);word-break:break-all;line-height:1.1;letter-spacing:-2px;font-family:'Playfair Display',serif}
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 12px 12px}
+.cb{background:rgba(255,255,255,.06);border:0.5px solid var(--border);border-radius:14px;padding:16px 5px;font-size:17px;font-weight:500;text-align:center;cursor:pointer;color:var(--text);transition:all .15s}
+.cb:active{transform:scale(.9);background:rgba(255,255,255,.1)}
+.cb.op{background:var(--goldb);color:var(--gold2)}
+.cb.fn{background:rgba(255,255,255,.04);color:var(--text2);font-size:13px}
+.cb.eq{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;border:none}
+.cb.z2{grid-column:span 2;text-align:left;padding-left:22px}
+.radio-item{background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:14px;padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all .15s}
+.radio-item.playing{background:var(--goldb);border-color:rgba(212,136,10,.3)}
+@keyframes kpiPop{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.kpi-flash{animation:kpiPop 3s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="splash"><div class="sp-orb">🍽️</div><div class="sp-t">Synergy Horeca</div><div class="sp-s">EQUIPMENT · TUNISIE</div><div class="sp-bar"><div class="sp-f"></div></div></div>
+<div id="inst-b"><div class="ib-row"><div style="font-size:26px">📲</div><div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">Installer Synergy Horeca</div><div style="font-size:10px;color:rgba(255,255,255,.6);margin-top:2px" id="ib-sub">Ajouter à l'écran d'accueil</div></div><button id="ib-btn" onclick="doInstall()">Installer ↓</button><div id="ib-x" onclick="hideBanner()">✕</div></div><div id="ios-g">1️⃣ Appuyez sur <strong>Partager ⎙</strong> en bas de Safari<br>2️⃣ Choisissez <strong>"Sur l'écran d'accueil"</strong><br>3️⃣ Appuyez sur <strong>Ajouter</strong></div></div>
+<div id="main">
+<div id="cat-bg"><div class="bg-ov"></div></div>
+<div id="hdr">
+  <div class="hdr-r1">
+    <div><div class="hdr-brand">Synergy Horeca</div><div class="hdr-time" id="hh-time" onclick="openFP('about')">--:--</div><div class="hdr-date" id="hh-date" onclick="openFP('about')"></div></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+      <div class="hdr-icons">
+        <div class="hdr-ico pray-blink" onclick="openFP('pray')">🕌</div>
+        <div class="hdr-ico" onclick="window.open('https://maps.google.com/maps?q=Rue+Monji+Slim+Rades+Tunis','_blank')">🗺️</div>
+        <div class="hdr-ico" id="radio-ico" onclick="playZitouna()">📻</div>
+      </div>
+      <div class="pray-pill" id="pray-pill" onclick="openFP('pray')">🕌 —</div>
+    </div>
+  </div>
+  <div class="about-strip">
+    <div class="about-ava" onclick="openFP('about')">🍽️</div>
+    <div class="about-info" onclick="openFP('about')">
+      <div class="about-name">Synergy Horeca Equipment — Matériels Horeca Occasion</div>
+      <div class="about-sub">📍 Rue Monji Slim, Radès · 📞 +216 20 910 909</div>
+    </div>
+    <div class="soc-row">
+      <div class="soc-ico" onclick="window.open('https://www.facebook.com','_blank')" style="background:#1877F215">📘</div>
+      <div class="soc-ico" onclick="window.open('https://www.instagram.com','_blank')" style="background:#E1306C15">📸</div>
+      <div class="soc-ico" onclick="window.open('https://www.tiktok.com','_blank')" style="background:rgba(255,255,255,.06)">🎵</div>
+    </div>
+  </div>
+</div>
+<div id="top-banner">
+  <div class="tb-item on" id="tb-home" onclick="tbTab('home')"><div class="tb-ico-b" style="background:rgba(212,136,10,.12)">🏠</div><div class="tb-lbl">Accueil</div></div>
+  <div class="tb-item" id="tb-mkt" onclick="tbTab('mkt')"><div class="tb-ico-b" style="background:rgba(24,119,242,.12)">🏪</div><div class="tb-lbl">Marché</div></div>
+  <div class="tb-item" id="tb-msg" onclick="tbTab('msg')"><div class="tb-ico-b" style="background:rgba(37,211,102,.12)">💬</div><div class="tb-lbl">Messages</div></div>
+  <div class="tb-item" id="tb-pub" onclick="tbTab('pub')"><div class="tb-ico-b" style="background:rgba(225,48,108,.12)">📢</div><div class="tb-lbl">Publier</div></div>
+</div>
+<div id="body-zone">
+  <div id="left-panel">
+    <div class="lp-item on" id="lp-stock" onclick="lpTab('stock')"><div class="lp-ico">📦</div><div class="lp-lbl">Stock</div></div>
+    <div class="lp-item" id="lp-ventes" onclick="lpTab('ventes')"><div class="lp-ico">💰</div><div class="lp-lbl">Ventes</div></div>
+    <div class="lp-item" id="lp-suivi" onclick="lpTab('suivi')"><div class="lp-ico">📈</div><div class="lp-lbl">Suivi</div></div>
+    <div class="lp-item" id="lp-devis" onclick="lpTab('devis')"><div class="lp-ico">📄</div><div class="lp-lbl">Devis</div></div>
+    <div class="lp-item" id="lp-finance" onclick="lpTab('finance')"><div class="lp-ico">🏦</div><div class="lp-lbl">Finance</div></div>
+  </div>
+  <div id="center-zone"><div class="cc" id="cc"></div></div>
+  <div id="right-panel">
+    <div class="rp-item" onclick="openFP('photo')"><div class="rp-ico">📷</div><div class="rp-lbl">Galerie</div></div>
+    <div class="rp-item" onclick="openFP('rep')"><div class="rp-ico">👥</div><div class="rp-lbl">Contacts</div></div>
+    <div class="rp-item" onclick="openFP('tools')"><div class="rp-ico">🛠️</div><div class="bonus-tag">BONUS</div><div class="rp-lbl">Outils</div></div>
+    <div class="rp-item" onclick="openFP('ai')"><div class="rp-ico">🤖</div><div class="rp-lbl">IA</div></div>
+    <div class="rp-item" onclick="openFP('news')"><div class="rp-ico">📰</div><div class="rp-lbl">Actus</div></div>
+    <div class="rp-item" onclick="openFP('cfg')"><div class="rp-ico">⚙️</div><div class="rp-lbl">Config</div></div>
+  </div>
+</div>
+<div id="bot-bar">
+  <div class="bot-item on" id="bot-cat" onclick="openCatFull()"><div class="bot-ico">📖</div><div class="bot-dot"></div><div class="bot-lbl">Catalogue</div></div>
+  <div class="bot-item" id="bot-notes" onclick="botNotes()"><div class="bot-ico">📝</div><div class="bot-dot"></div><div class="bot-lbl">Notes</div></div>
+  <div class="bot-item" id="bot-calc" onclick="openFP('calc')"><div class="bot-ico">🧮</div><div class="bot-lbl">Calc.</div></div>
+</div>
+
+<!-- PANELS -->
+<div class="fpanel" id="fp-about">
+  <div class="phdr"><div class="pbk" onclick="closeFP('about')">←</div><div class="pttl">À propos · Synergy Horeca</div></div>
+  <div class="pbody" style="padding:16px">
+    <div style="background:linear-gradient(135deg,rgba(212,136,10,.15),rgba(245,166,35,.08));border:0.5px solid rgba(212,136,10,.3);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px"><div style="font-size:48px;margin-bottom:12px">🍽️</div><div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--text);margin-bottom:6px">Synergy Horeca Equipment</div><div style="font-size:12px;color:var(--text2);line-height:1.7">Vente de matériels Horeca d'occasion · Tunisie<br>Réfrigération · Cuisson · Café · Vitrines · Mobilier</div></div>
+    <div class="card" style="margin-bottom:12px"><div class="card-bd">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:18px">📍</span><div><div style="font-size:13px;font-weight:600;color:var(--text)">Rue Monji Slim, Radès</div><div style="font-size:10px;color:var(--text3)">Gouvernorat Ben Arous · Tunisie</div></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:18px">📞</span><div><a href="tel:+21620910909" style="font-size:13px;font-weight:600;color:var(--text);text-decoration:none">+216 20 910 909</a><div style="font-size:10px;color:var(--text3)">Appel & WhatsApp</div></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0"><span style="font-size:18px">🕐</span><div><div style="font-size:13px;font-weight:600;color:var(--text)">Lun → Sam · 8h – 18h</div><div style="font-size:10px;color:var(--text3)">Sur rendez-vous possible</div></div></div>
+    </div></div>
+    <button onclick="window.open('https://maps.google.com/maps?q=Rue+Monji+Slim+Rades+Tunis+Tunisia','_blank')" style="background:linear-gradient(135deg,#16A34A,#22C55E);color:#fff;border:none;border-radius:12px;padding:12px;width:100%;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;margin-bottom:8px">🗺️ Voir mon dépôt sur Maps</button>
+    <button onclick="copyLocation()" style="background:rgba(255,255,255,.06);border:0.5px solid var(--border);color:var(--text2);border-radius:12px;padding:10px;width:100%;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;margin-bottom:14px">📋 Copier le lien localisation pour clients</button>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Réseaux sociaux</div>
+    <a href="https://www.facebook.com" target="_blank" class="li"><div class="li-ico" style="background:#1877F215">📘</div><div><div class="li-name">Facebook</div><div class="li-sub">Page Synergy Horeca</div></div></a>
+    <a href="https://www.instagram.com" target="_blank" class="li"><div class="li-ico" style="background:#E1306C15">📸</div><div><div class="li-name">Instagram</div><div class="li-sub">Photos & stories</div></div></a>
+    <a href="https://www.tiktok.com" target="_blank" class="li"><div class="li-ico" style="background:rgba(255,255,255,.06)">🎵</div><div><div class="li-name">TikTok</div><div class="li-sub">Vidéos courtes</div></div></a>
+    <a href="https://wa.me/21620910909" target="_blank" class="li"><div class="li-ico" style="background:#25D36615">💬</div><div><div class="li-name">WhatsApp Direct</div><div class="li-sub">+216 20 910 909</div></div></a>
+  </div>
+</div>
+
+<div class="fpanel" id="fp-pray">
+  <div class="phdr"><div class="pbk" onclick="closeFP('pray')">←</div><div class="pttl">Prière & Quran</div><button class="btn btn-sm" style="background:var(--green2);color:var(--green);border:0.5px solid rgba(34,197,94,.2)" onclick="window.open('https://quran.com','_blank')">📖 Quran</button></div>
+  <div class="pbody">
+    <div style="background:linear-gradient(160deg,#0E082E,#08081A);padding:24px;text-align:center;margin-bottom:12px"><div style="font-size:40px;margin-bottom:12px">🕌</div><div style="font-size:36px;font-weight:700;color:var(--gold2);letter-spacing:-1px" id="pr-t">—</div><div style="font-size:12px;color:var(--text3);margin-top:5px" id="pr-l">—</div><div style="font-family:'Amiri',serif;font-size:20px;color:rgba(255,255,255,.2);margin-top:14px;direction:rtl">بسم الله الرحمن الرحيم</div></div>
+    <div class="card" style="margin:0 0 12px" id="pr-list"></div>
+    <div style="padding:0 0 14px">
+      <a href="https://islamway.net" target="_blank" class="li"><div class="li-ico">📻</div><div><div class="li-name">Écouter le Coran</div><div class="li-sub">islamway.net</div></div></a>
+      <a href="https://quran.com" target="_blank" class="li"><div class="li-ico">📖</div><div><div class="li-name">Quran.com</div><div class="li-sub">Lecture et écoute</div></div></a>
+      <a href="https://www.radiozitouna.tn" target="_blank" class="li"><div class="li-ico">🎙️</div><div><div class="li-name">Radio Zitouna Tunisie</div><div class="li-sub">En direct</div></div></a>
+    </div>
+    <div style="text-align:center;padding:0 20px 30px;font-family:'Amiri',serif;font-size:19px;color:var(--text3);direction:rtl;line-height:2">اللهم اجعلنا من المتقين وارزقنا الرزق الحلال الواسع</div>
+  </div>
+</div>
+
+<div class="fpanel" id="fp-photo">
+  <div class="phdr"><div class="pbk" onclick="closeFP('photo')">←</div><div class="pttl">Photo & Vidéo</div></div>
+  <div class="pbody">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px">
+      <label for="cam-in" style="background:rgba(255,255,255,.05);border:0.5px solid var(--border);border-radius:16px;padding:20px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer"><div style="width:48px;height:48px;border-radius:13px;background:linear-gradient(145deg,#1C1C1E,#3A3A3C);display:flex;align-items:center;justify-content:center;font-size:24px">📷</div><div style="font-size:12px;font-weight:600;color:var(--text)">Caméra</div></label>
+      <input type="file" id="cam-in" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
+      <label for="gal-in" style="background:rgba(255,255,255,.05);border:0.5px solid var(--border);border-radius:16px;padding:20px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer"><div style="width:48px;height:48px;border-radius:13px;background:linear-gradient(145deg,#FF6B6B,#FF8E53);display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div><div style="font-size:12px;font-weight:600;color:var(--text)">Galerie</div></label>
+      <input type="file" id="gal-in" accept="image/*,video/*" multiple style="display:none" onchange="handleGallery(this)">
+    </div>
+    <div style="padding:0 14px 14px"><div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Sauvegardées</div><div id="photo-grid" class="pg"></div><div id="photo-empty" style="text-align:center;padding:36px;color:var(--text3);font-size:12px">Aucune photo</div></div>
+  </div>
+</div>
+
+<div class="fpanel" id="fp-rep">
+  <div class="phdr"><div class="pbk" onclick="closeFP('rep')">←</div><div class="pttl">Répertoire</div><button class="btn btn-gold btn-sm" onclick="openAddContact()">+ Contact</button></div>
+  <div class="pbody">
+    <div class="itabs"><div class="itab on" id="rt-all" onclick="repTab('all')">Tous</div><div class="itab" id="rt-clients" onclick="repTab('clients')">Clients</div><div class="itab" id="rt-fournisseurs" onclick="repTab('fournisseurs')">Fournisseurs</div></div>
+    <div id="rep-list" style="padding-bottom:calc(60px + var(--safe-b))"></div>
+  </div>
+</div>
+
+<div class="fpanel" id="fp-tools">
+  <div class="phdr"><div class="pbk" onclick="closeFP('tools')">←</div><div class="pttl">🛠️ Outils Gratuits <span style="font-size:10px;background:rgba(245,166,35,.2);color:var(--gold2);border-radius:8px;padding:2px 8px;margin-left:4px">BONUS</span></div></div>
+  <div class="pbody" style="padding:14px" id="tools-body"></div>
+</div>
+
+<div class="fpanel" id="fp-ai">
+  <div class="phdr"><div class="pbk" onclick="closeFP('ai')">←</div><div class="pttl">Intelligence Artificielle</div></div>
+  <div class="pbody" style="padding:14px">
+    <a href="https://claude.ai" target="_blank" style="background:linear-gradient(135deg,#7C3AED,#A78BFA);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;text-decoration:none;margin-bottom:10px"><div style="width:46px;height:46px;background:rgba(255,255,255,.2);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🤖</div><div style="flex:1"><div style="font-size:15px;font-weight:700;color:#fff">Claude · Anthropic</div><div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px">Assistant IA avancé · GRATUIT</div></div></a>
+    <a href="https://chat.openai.com" target="_blank" style="background:linear-gradient(135deg,#10A37F,#1A7F64);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;text-decoration:none"><div style="width:46px;height:46px;background:rgba(255,255,255,.2);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">💡</div><div style="flex:1"><div style="font-size:15px;font-weight:700;color:#fff">ChatGPT · OpenAI</div><div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px">Assistant IA puissant · GRATUIT</div></div></a>
+  </div>
+</div>
+
+<div class="fpanel" id="fp-news">
+  <div class="phdr"><div class="pbk" onclick="closeFP('news')">←</div><div class="pttl">Actualités</div></div>
+  <div class="pbody" style="padding:14px" id="news-body"></div>
+</div>
+
+<div class="fpanel" id="fp-cfg">
+  <div class="phdr"><div class="pbk" onclick="closeFP('cfg')">←</div><div class="pttl">Configuration</div></div>
+  <div class="pbody" id="cfg-body"></div>
+</div>
+
+<div class="fpanel" id="fp-calc">
+  <div class="phdr"><div class="pbk" onclick="closeFP('calc')">←</div><div class="pttl">Calculatrice</div></div>
+  <div class="pbody">
+    <div class="calc-d"><div class="calc-e" id="cx"></div><div class="calc-v" id="cv">0</div></div>
+    <div class="cg">
+      <div class="cb fn" onclick="cf('ac')">AC</div><div class="cb fn" onclick="cf('+/-')">±</div><div class="cb fn" onclick="cf('%')">%</div><div class="cb op" onclick="cf('/')">÷</div>
+      <div class="cb" onclick="cf('7')">7</div><div class="cb" onclick="cf('8')">8</div><div class="cb" onclick="cf('9')">9</div><div class="cb op" onclick="cf('*')">×</div>
+      <div class="cb" onclick="cf('4')">4</div><div class="cb" onclick="cf('5')">5</div><div class="cb" onclick="cf('6')">6</div><div class="cb op" onclick="cf('-')">−</div>
+      <div class="cb" onclick="cf('1')">1</div><div class="cb" onclick="cf('2')">2</div><div class="cb" onclick="cf('3')">3</div><div class="cb op" onclick="cf('+')">+</div>
+      <div class="cb z2" onclick="cf('0')">0</div><div class="cb" onclick="cf('.')">.</div><div class="cb eq" onclick="cf('=')">=</div>
+    </div>
+    <div style="padding:0 12px 16px"><div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Marge rapide</div><div class="g2"><div class="field"><label>Coût DT</label><input id="mc" type="number" placeholder="0" oninput="calcM()"></div><div class="field"><label>Prix DT</label><input id="mp" type="number" placeholder="0" oninput="calcM()"></div></div><div id="mr" style="display:none;background:var(--goldb);border:0.5px solid rgba(212,136,10,.2);border-radius:11px;padding:11px;text-align:center;font-size:15px;font-weight:700;color:var(--gold2)"></div></div>
+  </div>
+</div>
+
+<!-- CATALOGUE FULLSCREEN -->
+<div id="cat-full"><div id="cf-slides"></div><div class="cf-close" onclick="closeCatFull()">✕</div><div class="cf-nav"><div class="cf-nb" onclick="cfNav(-1)">‹</div><div class="cf-nb" onclick="cfNav(1)">›</div></div><div class="cf-dots" id="cf-dots"></div></div>
+
+<!-- DOC FULLSCREEN -->
+<div id="m-doc">
+  <div style="flex-shrink:0;background:rgba(8,8,26,.95);backdrop-filter:blur(20px);height:calc(var(--safe-t)+54px);display:flex;align-items:flex-end;padding:0 14px 11px;gap:11px;border-bottom:0.5px solid var(--border)">
+    <div onclick="closeDoc()" class="pbk">←</div>
+    <div style="font-family:'Playfair Display',serif;font-size:16px;color:var(--text);flex:1" id="m-doc-t">—</div>
+    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️</button>
+    <button class="btn btn-gold btn-sm" onclick="saveDoc()">Sauver</button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:14px">
+    <input type="hidden" id="dc-type"><input type="hidden" id="dc-id">
+    <div class="card" style="margin-bottom:10px"><div class="card-hd"><span class="card-t">👤 Client</span><button class="btn btn-ghost btn-sm" onclick="pickClient()">Choisir</button></div><div class="card-bd"><div class="g2"><div class="field"><label>Nom</label><input id="dc-cn" placeholder="Nom client"></div><div class="field"><label>Téléphone</label><input id="dc-ct" placeholder="+216..."></div></div><div class="field" style="margin-bottom:0"><label>Adresse</label><input id="dc-ca" placeholder="Adresse"></div><div id="dc-sw" style="display:none;margin-top:8px"><div class="field" style="margin-bottom:0"><label>Paiement</label><select id="dc-cs"><option value="pending">⏳ En attente</option><option value="partial">⚡ Partiel</option><option value="paid">✅ Payé</option></select></div></div></div></div>
+    <div class="card" style="margin-bottom:10px"><div class="card-hd"><span class="card-t">📦 Articles</span><button class="btn btn-gold btn-sm" onclick="addDocLine()">+ Ligne</button></div><div id="dc-lines"></div><div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;background:var(--goldb);border-top:0.5px solid var(--border)"><span style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase">TOTAL</span><span id="dc-tot" style="font-size:22px;font-weight:700;color:var(--gold2);letter-spacing:-1px">0 DT</span></div></div>
+    <div class="card" style="margin-bottom:10px"><div class="card-bd"><div class="field"><label>Notes</label><textarea id="dc-no" rows="2" placeholder="Conditions..."></textarea></div><div class="field" style="margin-bottom:0"><label>Validité</label><input id="dc-va" type="date"></div></div></div>
+    <div class="card" style="margin-bottom:20px"><div class="card-hd"><span class="card-t">📤 Partager</span></div><div class="sg"><div class="si" onclick="shareDoc('wa')"><div class="si-b" style="background:#25D36620">💬</div><div class="si-l">WhatsApp</div></div><div class="si" onclick="shareDoc('fb')"><div class="si-b" style="background:#1877F220">📘</div><div class="si-l">Facebook</div></div><div class="si" onclick="shareDoc('ig')"><div class="si-b" style="background:#E1306C20">📸</div><div class="si-l">Instagram</div></div><div class="si" onclick="shareDoc('gm')"><div class="si-b" style="background:#EA433520">📧</div><div class="si-l">Gmail</div></div><div class="si" onclick="shareDoc('tt')"><div class="si-b" style="background:rgba(255,255,255,.08)">🎵</div><div class="si-l">TikTok</div></div><div class="si" onclick="shareDoc('mk')"><div class="si-b" style="background:#E2141420">📱</div><div class="si-l">Tayara</div></div><div class="si" onclick="shareDoc('cp')"><div class="si-b" style="background:var(--goldb)">📋</div><div class="si-l">Copier</div></div><div class="si" onclick="shareDoc('all')"><div class="si-b" style="background:var(--goldb)">🚀</div><div class="si-l">Partout</div></div></div></div>
+  </div>
+</div>
+
+<!-- SHEETS -->
+<div class="overlay" id="sh-stock"><div class="sheet"><div class="sh-h"></div><div class="sh-t"><span id="sh-st-t">Nouvel Article</span><span class="sh-x" onclick="closeOverlays()">✕</span></div><div class="sh-b"><input type="hidden" id="sf-i"><div class="field"><label>Article *</label><input id="sf-a" placeholder="Description complète..."></div><div class="g2"><div class="field"><label>Catégorie</label><select id="sf-c"><option>Vitrine glace</option><option>Vitrine réfrig.</option><option>Réfrig. vertical vitré</option><option>Congélateur horiz vitré</option><option>Congélateur vertical vitré</option><option>Four pizza</option><option>Four pâtisserie</option><option>Machine café</option><option>Comptoir sandwich</option><option>Pétrin</option><option>Friteuse</option><option>Grillade</option><option>Mobilier</option><option>Divers</option></select></div><div class="field"><label>Statut</label><select id="sf-s"><option>✅ PRÊT</option><option>⭐ URGENT</option><option>🔵 Prioritaire</option><option>⏳ En cours</option><option>⚠ PERTE</option></select></div></div><div class="g2"><div class="field"><label>Coût (DT)</label><input id="sf-cout" type="number" placeholder="0"></div><div class="field"><label>Prix (DT)</label><input id="sf-prix" type="number" placeholder="0"></div></div><div class="g2"><div class="field"><label>Date entrée</label><input id="sf-d" type="date"></div><div class="field"><label>Avancement %</label><input id="sf-av" type="number" min="0" max="100" placeholder="80"></div></div><div class="field"><label>Provenance</label><input id="sf-p" placeholder="Ville / Région"></div><div class="field"><label>Travaux</label><textarea id="sf-t" rows="2" placeholder="Travaux nécessaires..."></textarea></div><button class="btn btn-gold btn-full btn-lg" onclick="saveStock()">Enregistrer</button></div></div></div>
+
+<div class="overlay" id="sh-vente"><div class="sheet"><div class="sh-h"></div><div class="sh-t"><span>Enregistrer une Vente</span><span class="sh-x" onclick="closeOverlays()">✕</span></div><div class="sh-b"><div class="field"><label>Depuis stock</label><select id="vf-sel" onchange="fillVente()"><option value="">— Choisir —</option></select></div><div class="field"><input id="vf-a" placeholder="Ou saisir manuellement"></div><div class="g2"><div class="field"><label>Coût (DT)</label><input id="vf-c" type="number" oninput="prvM()"></div><div class="field"><label>Prix vendu (DT)</label><input id="vf-v" type="number" oninput="prvM()"></div></div><div class="g2"><div class="field"><label>Date</label><input id="vf-d" type="date"></div><div class="field"><label>Acheteur</label><input id="vf-p" placeholder="Nom · Ville"></div></div><div id="vf-prev" style="display:none;background:var(--goldb);border:0.5px solid rgba(212,136,10,.2);border-radius:11px;padding:11px;text-align:center;margin-bottom:12px"><div style="font-size:8px;color:var(--text3);text-transform:uppercase;margin-bottom:3px">Marge</div><div id="vf-mv" style="font-size:26px;font-weight:700;color:var(--gold2);letter-spacing:-1px"></div></div><button class="btn btn-green btn-full btn-lg" onclick="saveVente()">✓ Confirmer la Vente</button></div></div></div>
+
+<div class="overlay" id="sh-ct"><div class="sheet"><div class="sh-h"></div><div class="sh-t"><span id="sh-ct-t">Nouveau Contact</span><span class="sh-x" onclick="closeOverlays()">✕</span></div><div class="sh-b"><input type="hidden" id="ctf-id"><div class="g2"><div class="field"><label>Nom *</label><input id="ctf-n" placeholder="Nom complet"></div><div class="field"><label>Téléphone</label><input id="ctf-t" type="tel" placeholder="+216..."></div></div><div class="g2"><div class="field"><label>Type</label><select id="ctf-ty"><option value="contact">Contact</option><option value="client">Client</option><option value="fournisseur">Fournisseur</option></select></div><div class="field"><label>Ville</label><input id="ctf-z" placeholder="Tunis..."></div></div><div class="field"><label>Note</label><input id="ctf-no" placeholder="Infos..."></div><button class="btn btn-gold btn-full btn-lg" onclick="saveContact()">Enregistrer</button></div></div></div>
+
+<div class="overlay" id="sh-note"><div class="sheet"><div class="sh-h"></div><div class="sh-t"><span id="sh-nt-t">Nouvelle Note</span><span class="sh-x" onclick="closeOverlays()">✕</span></div><div class="sh-b"><input type="hidden" id="nf-id"><div class="field"><label>Titre</label><input id="nf-ti" placeholder="Titre..."></div><div class="field"><label>Contenu</label><textarea id="nf-co" rows="6" placeholder="Votre note..."></textarea></div><button class="btn btn-gold btn-full btn-lg" onclick="saveNote()">Enregistrer</button></div></div></div>
+
+<div class="dialog" id="dlg-exit"><div class="dlg"><div style="font-size:36px;text-align:center;margin-bottom:12px">🚪</div><div class="dlg-t">Quitter ?</div><div class="dlg-s">Vos données sont sauvegardées.</div><div class="dlg-btns"><button class="btn btn-ghost btn-full" onclick="closeOverlays()">Annuler</button><button class="btn btn-full" style="background:var(--red);color:#fff" onclick="history.go(-history.length)">Quitter</button></div></div></div>
+<div class="dialog" id="dlg-del"><div class="dlg"><div style="font-size:36px;text-align:center;margin-bottom:12px">🗑️</div><div class="dlg-t">Supprimer ?</div><div class="dlg-s" id="dlg-dtxt">—</div><div class="dlg-btns"><button class="btn btn-ghost btn-full" onclick="closeOverlays()">Annuler</button><button class="btn btn-full" style="background:var(--red);color:#fff" id="dlg-dok">Supprimer</button></div></div></div>
+<div id="toasts"></div>
+</div>
+<script>
+const LD=(k,d)=>{try{const v=localStorage.getItem('shv5_'+k);return v?JSON.parse(v):d}catch{return d}};
+const SV=(k,v)=>{try{localStorage.setItem('shv5_'+k,JSON.stringify(v))}catch{}};
+const SA=()=>{SV('s',SD);SV('v',VD);SV('cfg',CF);SV('notes',notes);SV('contacts',contacts);SV('docs',docsData);SV('dn',docNum);SV('photos',photos)};
+const SD0=[
+{id:1,art:"Vitrine Glace Sanson FRAMEC",cat:"Vitrine glace",cout:800,prix:3500,av:.90,st:"⭐ URGENT",trav:"Fixation + polissage",prov:"Korba",de:"2025-07-29"},
+{id:2,art:"Vitrine Glace ISA côte d'Or",cat:"Vitrine glace",cout:1500,prix:4000,av:.95,st:"⭐ URGENT",trav:"Finition → marge +2500",prov:"Laouina",de:"2025-09-07"},
+{id:3,art:"Four Pizza Empero #1",cat:"Four pizza",cout:1700,prix:2500,av:1.0,st:"✅ PRÊT",trav:"100% opérationnel",prov:"Montplaisir",de:"2025-11-25"},
+{id:4,art:"Four Pizza Empero #2",cat:"Four pizza",cout:1700,prix:2500,av:1.0,st:"✅ PRÊT",trav:"100% opérationnel",prov:"Omrane",de:"2026-01-06"},
+{id:5,art:"Comptoir Sandwich 2m marbre",cat:"Comptoir sandwich",cout:1300,prix:3300,av:.90,st:"🔵 Prioritaire",trav:"Mastique + polissage",prov:"Nabeul",de:"2026-02-16"},
+{id:6,art:"Machine Café Reneka",cat:"Machine café",cout:1500,prix:2000,av:.95,st:"🔵 Prioritaire",trav:"Polissage",prov:"Laouina",de:"2025-09-07"},
+{id:7,art:"Congélateur UGUR 1.5m",cat:"Congélateur horiz vitré",cout:700,prix:1200,av:1.0,st:"✅ PRÊT",trav:"Excellent état",prov:"Mornag",de:"2026-01-04"},
+{id:8,art:"Four Pâtisserie 4 étages",cat:"Four pâtisserie",cout:1700,prix:2400,av:1.0,st:"✅ PRÊT",trav:"Polissage final",prov:"Sliman",de:"2026-01-11"},
+{id:9,art:"Réfrig. Président UGUR",cat:"Réfrig. vertical vitré",cout:900,prix:1400,av:.95,st:"🔵 Prioritaire",trav:"Socle + polissage",prov:"La Marsa",de:"2026-03-08"},
+{id:10,art:"Friteuse neuve",cat:"Friteuse",cout:500,prix:1000,av:1.0,st:"✅ PRÊT",trav:"Jamais utilisée",prov:"Mourouj 6",de:"2026-03-01"},
+];
+const VD0=[
+{id:1,art:"Machine café gaz",cout:3000,vendu:3500,dv:"2025-07-17",prov:"Mégrine",mois:"2025-07"},
+{id:2,art:"Vitrine glace ISA",cout:1700,vendu:3500,dv:"2025-07-15",prov:"Mahdia",mois:"2025-07"},
+{id:3,art:"Congélateur UGUR",cout:1000,vendu:1700,dv:"2025-10-01",prov:"Mhamdia",mois:"2025-10"},
+{id:4,art:"Buffet réfrigéré",cout:1400,vendu:2500,dv:"2025-12-30",prov:"Laouina",mois:"2025-12"},
+{id:5,art:"Réfrig. Coca Cola",cout:950,vendu:1500,dv:"2025-10-10",prov:"Mhamdia",mois:"2025-10"},
+{id:6,art:"Vitrine verticale",cout:650,vendu:2150,dv:"2026-02-22",prov:"Tadhamon",mois:"2026-02"},
+{id:7,art:"Pétrin 20L",cout:800,vendu:1800,dv:"2026-03-10",prov:"Sfax",mois:"2026-03"},
+];
+let SD=LD('s',SD0),VD=LD('v',VD0),CF=LD('cfg',{loyer:750,gasoil:300,internet:80,entretien:80,fond:30000,creance:15000,wa:'+21620910909'});
+let notes=LD('notes',[]),contacts=LD('contacts',[{id:1,nom:"Mohsen",zone:"Mhamdia",tel:"+216 50 000 000",type:"client",note:"VIP"},{id:2,nom:"Adel",zone:"Radès",tel:"+216 20 000 000",type:"client",note:"Fidèle"},{id:3,nom:"Transport Karim",zone:"Tunis",tel:"+216 22 000 000",type:"fournisseur",note:"Transport"}]);
+let docsData=LD('docs',[]),docNum=LD('dn',1),photos=LD('photos',[]);
+let docLines=[],curDocId=null,repTabA='all',exitCount=0,exitTimer=null,curFP=null;
+let lpA='stock',tbA='home',bgIdx=0,bgTimer=null,cfIdx=0;
+let zAudio=null,zPlaying=false,rPlay=null,rAudio=null,pAlert=false;
+let cexpr='',cnew=true;
+
+const fm=n=>new Intl.NumberFormat('fr-TN').format(Math.round(n))+' DT';
+const fd=d=>d?new Date(d+'T00:00').toLocaleDateString('fr-FR'):'—';
+const td=()=>new Date().toISOString().slice(0,10);
+const avi=s=>{const cs=['#D4880A','#22C55E','#60A5FA','#A78BFA','#EF4444','#2DD4BF'];let h=0;for(const c of(s||''))h+=c.charCodeAt(0);return cs[h%cs.length]};
+const ini=s=>(s||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const BST={'✅ PRÊT':'b-pret','⭐ URGENT':'b-urg','🔵 Prioritaire':'b-pri','⏳ En cours':'b-enc','⚠ PERTE':'b-per'};
+const BSC={'✅ PRÊT':'pret','⭐ URGENT':'urg','🔵 Prioritaire':'pri'};
+function catImg(cat){const cl=(cat||'').toLowerCase();if(cl.includes('glace'))return'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800&q=80';if(cl.includes('réfrig'))return'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80';if(cl.includes('four'))return'https://images.unsplash.com/photo-1556909114-44e3e9399a2b?w=800&q=80';if(cl.includes('café'))return'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80';if(cl.includes('comptoir'))return'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80';if(cl.includes('congél'))return'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80';return'https://images.unsplash.com/photo-1581299894007-aaa50297cf16?w=800&q=80';}
+function toast(m,t=''){const el=document.createElement('div');el.className='toast '+(t||'');el.textContent=m;document.getElementById('toasts').appendChild(el);setTimeout(()=>el.style.opacity='0',2200);setTimeout(()=>el.remove(),2600)}
+function confirmDel(txt,cb){document.getElementById('dlg-dtxt').textContent=txt;document.getElementById('dlg-dok').onclick=()=>{closeOverlays();cb()};document.getElementById('dlg-del').classList.add('on')}
+
+// CLOCK
+function updateClock(){const now=new Date();const t=document.getElementById('hh-time');if(t)t.textContent=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});const d=document.getElementById('hh-date');if(d)d.textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+
+// PRAYER
+const PR=[['Fajr','الفجر'],['Lever','الشروق'],['Dhuhr','الظهر'],['Asr','العصر'],['Maghrib','المغرب'],['Isha','العشاء']];
+function calcPrayer(){
+  const now=new Date();const y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();
+  const jdn=(367*y-Math.floor(7*(y+Math.floor((m+9)/12))/4)+Math.floor(275*m/9)+d+1721013.5+.5);
+  const D=jdn-2451545;const g=(357.529+.9856003*D)%360;const q=(280.459+.9856474*D)%360;
+  const L=(q+2*.0167*Math.sin(g*Math.PI/180))*Math.PI/180;const e=(23.439-.00000036*D)*Math.PI/180;
+  const RA=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L))/(15*Math.PI/180);
+  const dec=Math.asin(Math.sin(e)*Math.sin(L));const EqT=(q/15-((RA+360)%24));const lat=36.8*Math.PI/180;
+  const Dh=12-EqT+(10.18/15);
+  const ha=t=>Math.acos((Math.sin(t*Math.PI/180)-Math.sin(dec)*Math.sin(lat))/(Math.cos(dec)*Math.cos(lat)))*180/Math.PI/15;
+  const times=[Dh-ha(-18),Dh-ha(-.833),Dh,Dh+ha(Math.atan(1+Math.tan(Math.abs(lat-dec)))*180/Math.PI),Dh+ha(-.833),Dh+ha(-18)];
+  const fmt=h=>{const hr=Math.floor(h),mn=Math.round((h-hr)*60);return`${String(hr).padStart(2,'0')}:${String(mn).padStart(2,'0')}`};
+  return times.map(fmt);
+}
+function updatePrayer(){
+  const times=calcPrayer();const now=new Date();const nm=now.getHours()*60+now.getMinutes();
+  let ni=0,nt=times[0];
+  for(let i=0;i<times.length;i++){const[h,mn]=times[i].split(':').map(Number);if(h*60+mn>nm){ni=i;nt=times[i];break}}
+  const pp=document.getElementById('pray-pill');if(pp)pp.textContent='🕌 '+PR[ni][0]+' · '+nt;
+  const[h2,m2]=nt.split(':').map(Number);const diff=(h2*60+m2)-nm;
+  if(diff>0&&diff<=10&&!pAlert){pAlert=true;toast('🕌 '+PR[ni][0]+' dans '+diff+' min','g');try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch{}}else if(diff>10)pAlert=false;
+  const pt=document.getElementById('pr-t');if(pt)pt.textContent=nt;
+  const pl=document.getElementById('pr-l');if(pl)pl.textContent='Prochaine : '+PR[ni][0]+' · '+PR[ni][1];
+  const plist=document.getElementById('pr-list');if(!plist)return;
+  plist.innerHTML=times.map((t,i)=>{const[hh,mm]=t.split(':').map(Number);const past=hh*60+mm<nm;const next=i===ni;return`<div class="pr-row" style="${next?'background:rgba(34,197,94,.05)':''}"><div><div class="pr-name">${PR[i][0]}</div><div class="pr-ar">${PR[i][1]}</div></div><div style="display:flex;align-items:center;gap:8px">${next?'<span style="font-size:8px;background:var(--green2);color:var(--green);border-radius:8px;padding:2px 6px;font-weight:700">Suivante</span>':''}<div class="pr-time" style="color:${past?'var(--text3)':next?'var(--green)':'var(--gold2)'}">${t}</div></div></div>`}).join('');
+}
+
+// RADIO ZITOUNA
+function playZitouna(){const ico=document.getElementById('radio-ico');if(zPlaying){if(zAudio)zAudio.pause();zPlaying=false;ico.style.background='';toast('Radio arrêtée');return;}toast('🎙️ Radio Zitouna — Connexion...');zAudio=new Audio('https://stream.radiozitouna.tn/zitouna128');zAudio.play().then(()=>{zPlaying=true;ico.style.background='rgba(34,197,94,.2)';toast('🎙️ Radio Zitouna en direct !','g')}).catch(()=>{window.open('https://www.radiozitouna.tn','_blank');toast('Ouverture Radio Zitouna')});}
+
+// CAT BG
+function buildCatBg(){const el=document.getElementById('cat-bg');if(!el)return;const ov=el.querySelector('.bg-ov');el.querySelectorAll('.bg-sl').forEach(e=>e.remove());const imgs=[...new Set(SD.map(s=>catImg(s.cat)))];imgs.forEach((url,i)=>{const d=document.createElement('div');d.className='bg-sl'+(i===0?' on':'');d.style.backgroundImage=`url('${url}')`;el.insertBefore(d,ov)});}
+function startBgRotation(){if(bgTimer)clearInterval(bgTimer);bgTimer=setInterval(()=>{const sl=document.querySelectorAll('.bg-sl');if(!sl.length)return;sl[bgIdx%sl.length].classList.remove('on');bgIdx=(bgIdx+1)%sl.length;sl[bgIdx].classList.add('on')},5000);}
+
+// LOCATION
+function copyLocation(){const txt='📍 Mon dépôt Synergy Horeca\nhttps://maps.google.com/maps?q=Rue+Monji+Slim+Rades+Tunis+Tunisia\nRue Monji Slim, Radès · +216 20 910 909';navigator.clipboard?.writeText(txt).then(()=>toast('Lien copié ! Envoyez à vos clients 📤','g')).catch(()=>toast(txt));}
+
+// NAVIGATION
+function openFP(id){curFP=id;document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('on'));document.getElementById('fp-'+id)?.classList.add('on');const r={pray:updatePrayer,photo:rPhoto,rep:()=>repTab(repTabA),tools:rTools,news:rNews,cfg:rCfg};if(r[id])r[id]();}
+function closeFP(id){document.getElementById('fp-'+id)?.classList.remove('on');curFP=null;}
+function closeOverlays(){document.querySelectorAll('.overlay.on,.dialog.on').forEach(e=>e.classList.remove('on'));}
+function closeDoc(){document.getElementById('m-doc').style.display='none';}
+
+function tbTab(t){tbA=t;['home','mkt','msg','pub'].forEach(x=>{document.getElementById('tb-'+x)?.classList.toggle('on',x===t)});rCenter(t);}
+function lpTab(t){lpA=t;['stock','ventes','suivi','devis','finance'].forEach(x=>{document.getElementById('lp-'+x)?.classList.toggle('on',x===t)});['home','mkt','msg','pub'].forEach(x=>{document.getElementById('tb-'+x)?.classList.remove('on')});rCenter('gest');}
+function botNotes(){rCenter('notes');}
+
+// CENTER
+function rCenter(view){
+  const c=document.getElementById('cc');if(!c)return;
+  if(view==='home'){
+    const urg=SD.filter(s=>s.st==='⭐ URGENT').length;
+    const totV=VD.reduce((a,v)=>a+(v.vendu-v.cout),0);
+    const now=new Date();const months=[];
+    for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,lbl:d.toLocaleDateString('fr-FR',{month:'short'})})}
+    const data=months.map(m=>VD.filter(v=>(v.mois||v.dv?.slice(0,7))===m.key).reduce((a,v)=>a+(v.vendu-v.cout),0));
+    const mx=Math.max(...data,1);
+    const bS=VD.reduce((a,v)=>v.vendu>=(a.vendu||0)?v:a,VD[0]||{art:'—',vendu:0});
+    const bM=VD.reduce((a,v)=>(v.vendu-v.cout)>=(a.vendu-a.cout||0)?v:a,VD[0]||{art:'—',vendu:0,cout:0});
+    c.innerHTML=`
+    <div class="msr">
+      <div class="ms kpi-flash" onclick="lpTab('stock')"><div class="ms-v" style="color:var(--gold2)">${SD.length}</div><div class="ms-l">Stock</div></div>
+      <div class="ms kpi-flash" style="animation-delay:.3s" onclick="lpTab('ventes')"><div class="ms-v" style="color:var(--green)">${VD.length}</div><div class="ms-l">Vendus</div></div>
+      <div class="ms kpi-flash" style="animation-delay:.6s" onclick="lpTab('devis')"><div class="ms-v" style="color:var(--blue)">${docsData.filter(d=>d.type==='devis').length}</div><div class="ms-l">Devis</div></div>
+    </div>
+    ${urg>0?`<div style="background:var(--goldb);border:0.5px solid rgba(212,136,10,.3);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer" onclick="lpTab('stock')"><span style="font-size:16px">⚡</span><span style="font-size:11px;font-weight:600;color:var(--gold2)">${urg} URGENT — action requise !</span><span style="color:var(--gold3);font-size:16px">›</span></div>`:''}
+    <div class="chart12">
+      <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:11px;font-weight:600;color:var(--text2)">Ventes 12 mois</div><div style="font-size:11px;font-weight:700;color:var(--gold2)">${fm(data.reduce((a,b)=>a+b,0))}</div></div>
+      <div class="bars12">${data.map((v,i)=>`<div class="b12 ${v>0?'pos':'neg'} ${i===11?'cur':''}" style="height:${Math.max(3,Math.round(v/mx*60))}px"></div>`).join('')}</div>
+      <div class="m12">${months.map(m=>`<span>${m.lbl}</span>`).join('')}</div>
+    </div>
+    <div class="best-row">
+      <div class="best-card"><div class="best-lbl">🏆 Best Vente Ever</div><div class="best-item">${(bS?.art||'—').slice(0,22)}<br><span class="best-val">${fm(bS?.vendu||0)}</span></div></div>
+      <div class="best-card"><div class="best-lbl">💎 Best Marge Ever</div><div class="best-item">${(bM?.art||'—').slice(0,22)}<br><span class="best-val">+${fm((bM?.vendu||0)-(bM?.cout||0))}</span></div></div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.04));border:0.5px solid rgba(34,197,94,.2);border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:8px">
+      <div style="font-size:8px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">💰 Total Bénéfices</div>
+      <div style="font-size:22px;font-weight:700;color:var(--green);letter-spacing:-1px">${fm(totV)}</div>
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:0.5px solid var(--border);border-radius:12px;padding:10px 12px;text-align:center">
+      <div style="font-size:8px;color:var(--text3);font-weight:600;text-transform:uppercase;margin-bottom:4px">📦 Valeur Stock actuel</div>
+      <div style="font-size:18px;font-weight:700;color:var(--gold2)">${fm(SD.reduce((a,s)=>a+s.prix,0))}</div>
+    </div>`;
+  }
+  else if(view==='gest'){
+    if(lpA==='stock')rStock(c);else if(lpA==='ventes')rVentes(c);else if(lpA==='suivi')rSuivi(c);else if(lpA==='devis')rDevis(c);else rFinance(c);
+  }
+  else if(view==='mkt'){
+    const q=document.getElementById('mkt-q-in')?.value||'équipement horeca occasion';
+    const enc=encodeURIComponent(q);
+    c.innerHTML=`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:0.5px solid var(--border);border-radius:11px;padding:9px 12px;margin-bottom:12px"><span>🔍</span><input id="mkt-q-in" placeholder="Rechercher..." style="background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);flex:1" value="${q}" oninput="rCenter('mkt')"></div>
+    <a href="https://www.facebook.com/marketplace/search?query=${enc}" target="_blank" class="li"><div class="li-ico">🏪</div><div><div class="li-name">Facebook Marketplace</div><div class="li-sub">${q}</div></div></a>
+    <a href="https://www.tayara.tn/search?q=${enc}" target="_blank" class="li"><div class="li-ico">📱</div><div><div class="li-name">Tayara.tn</div><div class="li-sub">Petites annonces Tunisie</div></div></a>
+    <a href="https://www.jumia.com.tn" target="_blank" class="li"><div class="li-ico">🛒</div><div><div class="li-name">Jumia Tunisie</div><div class="li-sub">E-commerce</div></div></a>
+    <a href="https://www.facebook.com/marketplace/create" target="_blank" class="li"><div class="li-ico">➕</div><div><div class="li-name">Publier une annonce</div><div class="li-sub">Facebook Marketplace</div></div></a>`;
+  }
+  else if(view==='msg'){
+    c.innerHTML=`<a href="https://wa.me/21620910909" target="_blank" style="background:linear-gradient(135deg,#25D366,#128C7E);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;text-decoration:none;margin-bottom:10px"><div style="font-size:24px;flex-shrink:0">💬</div><div><div style="font-size:14px;font-weight:700;color:#fff">WhatsApp Business</div><div style="font-size:10px;color:rgba(255,255,255,.7)">+216 20 910 909</div></div></a>
+    <a href="https://m.me" target="_blank" class="li"><div class="li-ico" style="background:#1877F215">💬</div><div><div class="li-name">Messenger</div><div class="li-sub">Facebook</div></div></a>
+    <a href="https://www.instagram.com/direct/inbox/" target="_blank" class="li"><div class="li-ico" style="background:#E1306C15">📸</div><div><div class="li-name">Instagram DM</div><div class="li-sub">Messages directs</div></div></a>
+    <a href="https://mail.google.com" target="_blank" class="li"><div class="li-ico" style="background:#EA433515">📧</div><div><div class="li-name">Gmail</div><div class="li-sub">Email professionnel</div></div></a>
+    <a href="https://www.tiktok.com/messages" target="_blank" class="li"><div class="li-ico" style="background:rgba(255,255,255,.06)">🎵</div><div><div class="li-name">TikTok</div><div class="li-sub">Messages</div></div></a>`;
+  }
+  else if(view==='pub'){
+    c.innerHTML=`<a href="https://www.facebook.com/marketplace/create" target="_blank" style="background:linear-gradient(135deg,#1877F2,#4267B2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;text-decoration:none;margin-bottom:8px"><div style="font-size:24px;flex-shrink:0">🏪</div><div><div style="font-size:14px;font-weight:700;color:#fff">Facebook Marketplace</div><div style="font-size:10px;color:rgba(255,255,255,.7)">Publier annonce + photos</div></div></a>
+    <a href="https://www.tayara.tn" target="_blank" class="li"><div class="li-ico">📱</div><div><div class="li-name">Tayara.tn</div><div class="li-sub">Annonce Tunisie</div></div></a>
+    <a href="https://www.instagram.com" target="_blank" class="li"><div class="li-ico" style="background:#E1306C15">📸</div><div><div class="li-name">Instagram</div><div class="li-sub">Post ou Story</div></div></a>
+    <a href="https://www.tiktok.com/upload" target="_blank" class="li"><div class="li-ico" style="background:rgba(255,255,255,.06)">🎵</div><div><div class="li-name">TikTok</div><div class="li-sub">Vidéo courte</div></div></a>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:12px 0 8px">Modèles rapides</div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">${['Vitrine glace','Four pizza','Machine café','Congélateur','Comptoir'].map(t=>`<div onclick="genPub('${t}')" style="background:var(--goldb);border:0.5px solid rgba(212,136,10,.2);border-radius:9px;padding:6px 10px;font-size:10px;font-weight:600;color:var(--gold2);cursor:pointer">📋 ${t}</div>`).join('')}</div>
+    <div class="field"><label>Annonce</label><textarea id="pub-txt" rows="3" placeholder="Rédigez votre annonce..."></textarea></div>
+    <button class="btn btn-gold btn-full" onclick="openShareSheet(document.getElementById('pub-txt').value||'Synergy Horeca · +216 20 910 909')">🚀 Partager partout</button>`;
+  }
+  else if(view==='notes'){
+    if(!notes.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--text3)"><div style="font-size:36px;margin-bottom:8px">📝</div><div>Aucune note</div></div><button class="btn btn-gold" onclick="openNewNote()">+ Nouvelle note</button>';return;}
+    c.innerHTML=notes.slice().reverse().map((n,ri)=>{const i=notes.length-1-ri;return`<div class="sc" style="position:relative" onclick="openEditNote(${i})"><div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">${n.title||'Sans titre'}</div><div style="font-size:10px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${n.content||''}</div><div style="font-size:8px;color:var(--text3);margin-top:6px">${fd(n.date)}</div><div onclick="event.stopPropagation();confirmDel('Supprimer?',()=>{notes.splice(${i},1);SA();rCenter('notes')})" style="position:absolute;top:10px;right:10px;width:22px;height:22px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:11px">✕</div></div>`}).join('')+`<button class="btn btn-gold" style="margin-top:8px" onclick="openNewNote()">+ Nouvelle note</button>`;
+  }
+}
+
+function genPub(t){const txt=`🏪 À VENDRE — ${t}\n✅ Équipement professionnel occasion\n💰 Prix négociable\n📍 Rue Monji Slim, Radès · Tunis\n📞 +216 20 910 909 (Synergy Horeca)`;const el=document.getElementById('pub-txt');if(el)el.value=txt;navigator.clipboard?.writeText(txt).then(()=>toast('Copié ✓','g'));}
+
+// STOCK
+function rStock(c){
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--text2)">📦 ${SD.length} articles</div><button class="btn btn-gold btn-sm" onclick="openAddStock()">+ Article</button></div>`+
+  SD.map((s,i)=>`<div class="sc ${BSC[s.st]||''}">
+    <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:7px">
+      <img style="width:44px;height:44px;border-radius:9px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.05)" src="${catImg(s.cat)}" loading="lazy">
+      <div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.art}</div><div style="font-size:8px;color:var(--text3);margin-top:2px;text-transform:uppercase">${s.cat}</div></div>
+      <span class="badge ${BST[s.st]||'b-enc'}" style="flex-shrink:0">${s.st}</span>
+    </div>
+    <div style="font-size:9px;color:var(--text3);margin-bottom:7px">${s.trav}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><div style="font-size:15px;font-weight:700;color:var(--text)">${fm(s.prix)}</div><div style="font-size:8px;color:var(--text3)">Coût: ${fm(s.cout)} · ${s.prov||'—'}</div></div>
+      <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:var(--green)">+${fm(s.prix-s.cout)}</div></div>
+    </div>
+    <div class="prog"><div class="prog-f" style="width:${s.av*100}%"></div></div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+      <button class="btn btn-green btn-sm" style="flex:1;font-size:10px" onclick="openVente(${i})">✓ Vendu</button>
+      <button class="btn btn-ghost btn-sm" style="font-size:10px" onclick="shareStock(${i})">📤</button>
+      <button class="btn btn-ghost btn-sm" style="font-size:10px" onclick="editStock(${i})">✏️</button>
+      <button class="btn btn-ghost btn-sm" style="font-size:10px" onclick="confirmDel('Supprimer?',()=>{SD.splice(${i},1);SA();rCenter('gest');buildCatBg()})">🗑</button>
+    </div>
+  </div>`).join('');
+}
+
+function rVentes(c){
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--text2)">💰 ${VD.length} ventes</div><button class="btn btn-green btn-sm" onclick="openAddVente()">+ Vente</button></div>`+
+  VD.slice().reverse().map((v,ri)=>{const i=VD.length-1-ri;const mg=v.vendu-v.cout;return`<div class="sc ${mg>0?'pret':''}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${v.art}</div><div style="font-size:8px;color:var(--text3);margin-top:2px">${fd(v.dv)} · ${v.prov||'—'}</div></div><button onclick="confirmDel('Supprimer?',()=>{VD.splice(${i},1);SA();rCenter('gest')})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:0;margin-left:8px">🗑</button></div><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:15px;font-weight:700;color:var(--text)">${fm(v.vendu)}</div><div style="font-size:8px;color:var(--text3)">Coût: ${fm(v.cout)}</div></div><div style="font-size:18px;font-weight:700;color:${mg>0?'var(--green)':'var(--red)'}">${mg>0?'+':''}${fm(mg)}</div></div></div>`}).join('');
+}
+
+function rSuivi(c){
+  const now=new Date();const months=[];
+  for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,lbl:d.toLocaleDateString('fr-FR',{month:'short',year:'2-digit'})})}
+  const data=months.map(m=>VD.filter(v=>(v.mois||v.dv?.slice(0,7))===m.key).reduce((a,v)=>a+(v.vendu-v.cout),0));
+  const tot=data.reduce((a,b)=>a+b,0);const mx=Math.max(...data,1);
+  c.innerHTML=`<div class="msr"><div class="ms"><div class="ms-v" style="color:var(--green)">${fm(tot).replace(' DT','')}</div><div class="ms-l">Total 12m</div></div><div class="ms"><div class="ms-v" style="color:var(--gold2)">${fm(tot/12).replace(' DT','')}</div><div class="ms-l">Moy/mois</div></div><div class="ms"><div class="ms-v" style="color:var(--blue)">${VD.length}</div><div class="ms-l">Ventes</div></div></div>
+  <div class="chart12"><div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px">Bénéfices — 12 mois</div><div class="bars12">${data.map((v,i)=>`<div class="b12 ${v>0?'pos':'neg'} ${i===11?'cur':''}" style="height:${Math.max(3,Math.round(v/mx*60))}px"></div>`).join('')}</div><div class="m12">${months.map(m=>`<span>${m.lbl}</span>`).join('')}</div></div>
+  <div class="card"><div class="card-hd"><span class="card-t">📋 Détail mensuel</span></div>${months.slice().reverse().map((m,ri)=>{const i=11-ri;const v=data[i];const nb=VD.filter(x=>(x.mois||x.dv?.slice(0,7))===m.key).length;return`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:0.5px solid var(--border)"><div><div style="font-size:11px;font-weight:600;color:var(--text)">${m.lbl}</div><div style="font-size:8px;color:var(--text3)">${nb} vente(s)</div></div><div style="font-size:13px;font-weight:700;color:${v>0?'var(--green)':'var(--text3)'}">${v>0?'+':''}${fm(v)}</div></div>`}).join('')}</div>`;
+}
+
+function rDevis(c){
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--text2)">📄 Documents</div><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="openNewDoc('devis')">Devis</button><button class="btn btn-gold btn-sm" onclick="openNewDoc('facture')">Facture</button></div></div>`+
+  (docsData.length?docsData.slice().reverse().map(d=>`<div class="sc" onclick="openEditDoc('${d.id}')"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-size:10px;font-weight:700;color:var(--gold2)">${d.num}</div><div style="font-size:9px;color:var(--text3)">${fd(d.date)}</div></div><div style="font-size:12px;font-weight:600;color:var(--text)">${d.client||'—'}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px"><div style="font-size:16px;font-weight:700;color:var(--text)">${fm(d.total)}</div><span class="badge ${d.status==='paid'?'b-pret':d.status==='partial'?'b-pri':'b-enc'}">${d.status==='paid'?'✅ Payé':d.status==='partial'?'⚡ Partiel':'⏳ Attente'}</span></div></div>`).join(''):'<div style="text-align:center;padding:36px;color:var(--text3)"><div style="font-size:40px;margin-bottom:10px">📄</div><div>Aucun document</div></div>');
+}
+
+function rFinance(c){
+  const totM=VD.reduce((a,v)=>a+(v.vendu-v.cout),0);const totC=CF.loyer+CF.gasoil+CF.internet+CF.entretien;const net=totM-totC;
+  c.innerHTML=`<div class="card" style="margin-bottom:10px"><div class="card-hd"><span class="card-t">📊 Synthèse</span></div><div class="card-bd">${[['Marge brute',fm(totM),'var(--green)'],['Charges/mois',fm(totC),'var(--red)'],['Bénéfice net',fm(net),net>0?'var(--green)':'var(--red)'],['Fonds encaisse',fm(CF.fond),'var(--text)'],['Créances',fm(CF.creance),'var(--gold2)']].map(([l,v,col])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border)"><div style="font-size:11px;color:var(--text2)">${l}</div><div style="font-size:13px;font-weight:700;color:${col}">${v}</div></div>`).join('')}</div></div>
+  <div class="card"><div class="card-hd"><span class="card-t">⚙️ Charges mensuelles</span></div><div class="card-bd"><div class="g2"><div class="field"><label>Loyer</label><input type="number" value="${CF.loyer}" onchange="CF.loyer=+this.value;SA();rCenter('gest')"></div><div class="field"><label>Gasoil</label><input type="number" value="${CF.gasoil}" onchange="CF.gasoil=+this.value;SA();rCenter('gest')"></div><div class="field"><label>Internet</label><input type="number" value="${CF.internet}" onchange="CF.internet=+this.value;SA();rCenter('gest')"></div><div class="field"><label>Entretien</label><input type="number" value="${CF.entretien}" onchange="CF.entretien=+this.value;SA();rCenter('gest')"></div><div class="field"><label>Fonds</label><input type="number" value="${CF.fond}" onchange="CF.fond=+this.value;SA();rCenter('gest')"></div><div class="field"><label>Créances</label><input type="number" value="${CF.creance}" onchange="CF.creance=+this.value;SA();rCenter('gest')"></div></div></div></div>`;
+}
+
+// STOCK CRUD
+function editStock(i){const s=SD[i];document.getElementById('sf-i').value=i;document.getElementById('sf-a').value=s.art;document.getElementById('sf-c').value=s.cat;document.getElementById('sf-s').value=s.st;document.getElementById('sf-cout').value=s.cout;document.getElementById('sf-prix').value=s.prix;document.getElementById('sf-d').value=s.de||'';document.getElementById('sf-av').value=Math.round(s.av*100);document.getElementById('sf-p').value=s.prov||'';document.getElementById('sf-t').value=s.trav||'';document.getElementById('sh-st-t').textContent='Modifier Article';document.getElementById('sh-stock').classList.add('on');}
+function openAddStock(){document.getElementById('sf-i').value='';document.getElementById('sf-a').value='';document.getElementById('sf-cout').value='';document.getElementById('sf-prix').value='';document.getElementById('sf-d').value=td();document.getElementById('sf-av').value='80';document.getElementById('sf-p').value='';document.getElementById('sf-t').value='';document.getElementById('sh-st-t').textContent='Nouvel Article';document.getElementById('sh-stock').classList.add('on');}
+function saveStock(){const idx=document.getElementById('sf-i').value;const art=document.getElementById('sf-a').value.trim();if(!art){toast('Article requis','r');return;}const item={id:idx===''?Math.max(0,...SD.map(s=>s.id))+1:SD[+idx].id,art,cat:document.getElementById('sf-c').value,st:document.getElementById('sf-s').value,cout:+document.getElementById('sf-cout').value||0,prix:+document.getElementById('sf-prix').value||0,de:document.getElementById('sf-d').value,av:(+document.getElementById('sf-av').value||80)/100,prov:document.getElementById('sf-p').value,trav:document.getElementById('sf-t').value};if(idx==='')SD.push(item);else SD[+idx]=item;SA();closeOverlays();rCenter('gest');buildCatBg();toast('Enregistré ✓','g');}
+function shareStock(i){const s=SD[i];openShareSheet(`🏪 SYNERGY HORECA\n${s.art}\n💰 ${fm(s.prix)}\n📍 ${s.prov||'Radès, Tunis'}\n📞 +216 20 910 909`);}
+
+function openShareSheet(txt){
+  const el=document.createElement('div');el.className='overlay on';
+  el.innerHTML=`<div class="sheet"><div class="sh-h"></div><div class="sh-t"><span>Partager</span><span class="sh-x" onclick="this.closest('.overlay').remove()">✕</span></div><div class="sg">
+    <div class="si" onclick="window.open('https://wa.me/?text='+encodeURIComponent(${JSON.stringify(txt)}),'_blank');this.closest('.overlay').remove()"><div class="si-b" style="background:#25D36620">💬</div><div class="si-l">WhatsApp</div></div>
+    <div class="si" onclick="window.open('https://www.facebook.com/sharer/sharer.php?quote='+encodeURIComponent(${JSON.stringify(txt)}),'_blank');this.closest('.overlay').remove()"><div class="si-b" style="background:#1877F220">📘</div><div class="si-l">Facebook</div></div>
+    <div class="si" onclick="window.open('https://www.instagram.com/','_blank');this.closest('.overlay').remove()"><div class="si-b" style="background:#E1306C20">📸</div><div class="si-l">Instagram</div></div>
+    <div class="si" onclick="window.open('https://www.tiktok.com/','_blank');this.closest('.overlay').remove()"><div class="si-b" style="background:rgba(255,255,255,.08)">🎵</div><div class="si-l">TikTok</div></div>
+    <div class="si" onclick="window.open('mailto:?body='+encodeURIComponent(${JSON.stringify(txt)}),'_blank');this.closest('.overlay').remove()"><div class="si-b" style="background:#EA433520">📧</div><div class="si-l">Gmail</div></div>
+    <div class="si" onclick="window.open('https://www.tayara.tn','_blank');this.closest('.overlay').remove()"><div class="si-b" style="background:#E2141420">📱</div><div class="si-l">Tayara</div></div>
+    <div class="si" onclick="navigator.clipboard?.writeText(${JSON.stringify(txt)}).then(()=>toast('Copié ✓','g'));this.closest('.overlay').remove()"><div class="si-b" style="background:var(--goldb)">📋</div><div class="si-l">Copier</div></div>
+    <div class="si" onclick="if(navigator.share)navigator.share({text:${JSON.stringify(txt)}});this.closest('.overlay').remove()"><div class="si-b" style="background:rgba(255,255,255,.06)">↗</div><div class="si-l">Partager</div></div>
+  </div></div>`;document.body.appendChild(el);
+}
+
+// VENTES
+function openAddVente(){document.getElementById('vf-a').value='';document.getElementById('vf-c').value='';document.getElementById('vf-v').value='';document.getElementById('vf-d').value=td();document.getElementById('vf-p').value='';document.getElementById('vf-prev').style.display='none';const sel=document.getElementById('vf-sel');sel.innerHTML='<option value="">— Depuis stock —</option>'+SD.map((s,i)=>`<option value="${i}">${s.art.slice(0,40)}</option>`).join('');document.getElementById('sh-vente').classList.add('on');}
+function openVente(i){openAddVente();document.getElementById('vf-sel').value=i;fillVente();}
+function fillVente(){const idx=document.getElementById('vf-sel').value;if(idx==='')return;const s=SD[+idx];document.getElementById('vf-a').value=s.art;document.getElementById('vf-c').value=s.cout;document.getElementById('vf-v').value=s.prix;prvM();}
+function prvM(){const c=+document.getElementById('vf-c').value||0,v=+document.getElementById('vf-v').value||0;if(!c&&!v)return;const mg=v-c;document.getElementById('vf-prev').style.display='block';document.getElementById('vf-mv').textContent=fm(mg);document.getElementById('vf-mv').style.color=mg>0?'var(--green)':'var(--red)';}
+function saveVente(){const art=(document.getElementById('vf-sel').value!==''?SD[+document.getElementById('vf-sel').value]?.art:document.getElementById('vf-a').value)||'Article';const cout=+document.getElementById('vf-c').value||0,vendu=+document.getElementById('vf-v').value||0;if(!vendu){toast('Prix requis','r');return;}const dv=document.getElementById('vf-d').value;const item={id:Math.max(0,...VD.map(v=>v.id))+1,art,cout,vendu,dv,mois:dv?.slice(0,7),prov:document.getElementById('vf-p').value};const idx=document.getElementById('vf-sel').value;if(idx!=='')SD.splice(+idx,1);VD.push(item);SA();closeOverlays();rCenter('gest');buildCatBg();toast('Vente enregistrée ✓','g');}
+
+// NOTES
+function openNewNote(){document.getElementById('nf-id').value='';document.getElementById('nf-ti').value='';document.getElementById('nf-co').value='';document.getElementById('sh-nt-t').textContent='Nouvelle Note';document.getElementById('sh-note').classList.add('on');}
+function openEditNote(i){const n=notes[i];document.getElementById('nf-id').value=i;document.getElementById('nf-ti').value=n.title||'';document.getElementById('nf-co').value=n.content||'';document.getElementById('sh-nt-t').textContent='Modifier Note';document.getElementById('sh-note').classList.add('on');}
+function saveNote(){const idx=document.getElementById('nf-id').value;const note={title:document.getElementById('nf-ti').value.trim()||'Sans titre',content:document.getElementById('nf-co').value,date:td()};if(idx==='')notes.push(note);else notes[+idx]=note;SA();closeOverlays();toast('Note sauvegardée ✓','g');}
+
+// PHOTO
+function rPhoto(){const pg=document.getElementById('photo-grid');const pe=document.getElementById('photo-empty');if(!pg)return;if(!photos.length){pg.style.display='none';if(pe)pe.style.display='block';return;}if(pe)pe.style.display='none';pg.style.display='grid';pg.innerHTML=photos.map((p,i)=>`<img class="pt" src="${p}" loading="lazy" onclick="window.open('${p}')">`).join('');}
+function handlePhoto(inp){if(!inp.files.length)return;const fr=new FileReader();fr.onload=e=>{photos.unshift(e.target.result);SA();rPhoto();toast('Photo sauvegardée ✓','g');};fr.readAsDataURL(inp.files[0]);inp.value='';}
+function handleGallery(inp){[...inp.files].forEach(f=>{const fr=new FileReader();fr.onload=e=>{photos.unshift(e.target.result);SA();rPhoto();};fr.readAsDataURL(f);});inp.value='';toast(`${inp.files.length} photo(s)`,'g');}
+
+// CATALOGUE FULLSCREEN
+function openCatFull(){cfIdx=0;buildCatFull();document.getElementById('cat-full').classList.add('on');}
+function closeCatFull(){document.getElementById('cat-full').classList.remove('on');}
+function buildCatFull(){
+  const el=document.getElementById('cf-slides');if(!el)return;
+  const all=[...SD,...VD.map(v=>({...v,art:v.art+' ✅ VENDU',st:'✅ VENDU',prix:v.vendu}))];
+  el.innerHTML=all.map((s,i)=>`<div class="cf-sl ${i===0?'on':''}" id="cf-${i}">
+    <img class="cf-img" src="${catImg(s.cat||'')}" loading="lazy">
+    <div class="cf-info">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-size:9px;font-weight:700;color:var(--gold2);text-transform:uppercase">${s.cat||'Article'}</div><span class="badge ${BST[s.st]||'b-enc'}">${s.st||'—'}</span></div>
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:5px">${s.art}</div>
+      <div style="font-size:22px;font-weight:800;color:var(--gold2);letter-spacing:-1px;margin-bottom:2px">${fm(s.prix||0)}</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.5)">+${fm((s.prix||0)-(s.cout||0))} · ${s.prov||'Radès'}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:12px">
+        <div onclick="window.open('https://wa.me/?text='+encodeURIComponent('🏪 SYNERGY HORECA\\n${s.art.replace(/'/g,"\\'")}\\n💰 ${fm(s.prix||0)}\\n📍 ${(s.prov||'Radès').replace(/'/g,"\\'")}\\n📞 +216 20 910 909'),'_blank')" style="background:rgba(37,211,102,.15);color:#25D366;border-radius:9px;padding:9px;text-align:center;cursor:pointer;font-size:11px;font-weight:600">💬 WA</div>
+        <div onclick="openShareSheet('🏪 SYNERGY HORECA\\n${s.art.replace(/'/g,"\\'")}\\n💰 ${fm(s.prix||0)}\\n📍 ${(s.prov||'Radès').replace(/'/g,"\\'")}\\n📞 +216 20 910 909')" style="background:var(--goldb);color:var(--gold2);border-radius:9px;padding:9px;text-align:center;cursor:pointer;font-size:11px;font-weight:600">🚀 Partager</div>
+        <div onclick="openNewDoc('devis')" style="background:var(--blue2);color:var(--blue);border-radius:9px;padding:9px;text-align:center;cursor:pointer;font-size:11px;font-weight:600">📄 Devis</div>
+      </div>
+    </div>
+  </div>`).join('');
+  document.getElementById('cf-dots').innerHTML=Array.from({length:all.length},(_,i)=>`<div class="cf-dot ${i===0?'on':''}" onclick="goSlide(${i})"></div>`).join('');
+}
+function goSlide(i){const sl=document.querySelectorAll('.cf-sl');sl[cfIdx]?.classList.remove('on');cfIdx=Math.max(0,Math.min(i,sl.length-1));sl[cfIdx]?.classList.add('on');document.querySelectorAll('.cf-dot').forEach((d,j)=>d.classList.toggle('on',j===cfIdx));}
+function cfNav(d){goSlide(cfIdx+d);}
+let cfSwX=0;
+document.addEventListener('touchstart',e=>{if(document.getElementById('cat-full').classList.contains('on'))cfSwX=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{if(!document.getElementById('cat-full').classList.contains('on'))return;const dx=e.changedTouches[0].clientX-cfSwX;if(Math.abs(dx)>50)cfNav(dx<0?1:-1);},{passive:true});
+
+// DOCS
+function openNewDoc(type){curDocId=null;docLines=[];document.getElementById('dc-type').value=type;document.getElementById('dc-id').value='';document.getElementById('dc-cn').value='';document.getElementById('dc-ct').value='';document.getElementById('dc-ca').value='';document.getElementById('dc-no').value='';document.getElementById('dc-va').value='';document.getElementById('dc-sw').style.display=type==='facture'?'block':'none';document.getElementById('m-doc-t').textContent='Nouveau '+(type==='devis'?'Devis':'Facture');document.getElementById('dc-lines').innerHTML='';document.getElementById('dc-tot').textContent='0 DT';document.getElementById('m-doc').style.display='flex';}
+function openEditDoc(id){const d=docsData.find(x=>x.id===id);if(!d)return;curDocId=id;docLines=d.lines||[];document.getElementById('dc-type').value=d.type;document.getElementById('dc-cn').value=d.client||'';document.getElementById('dc-ct').value=d.tel||'';document.getElementById('dc-ca').value=d.adr||'';document.getElementById('dc-no').value=d.notes||'';document.getElementById('dc-va').value=d.valid||'';document.getElementById('dc-sw').style.display=d.type==='facture'?'block':'none';if(d.status)document.getElementById('dc-cs').value=d.status;document.getElementById('m-doc-t').textContent=(d.type==='devis'?'Devis ':'Facture ')+d.num;renderDocLines();document.getElementById('m-doc').style.display='flex';}
+function addDocLine(){docLines.push({desc:'',qty:1,pu:0});renderDocLines();}
+function renderDocLines(){const el=document.getElementById('dc-lines');if(!el)return;el.innerHTML=docLines.map((l,i)=>`<div style="padding:9px 13px;border-bottom:0.5px solid var(--border)"><div class="field" style="margin-bottom:5px"><input value="${l.desc}" placeholder="Description" onchange="docLines[${i}].desc=this.value;calcDocTot()"></div><div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:center"><div class="field" style="margin:0"><label>Qté</label><input type="number" value="${l.qty}" oninput="docLines[${i}].qty=+this.value;calcDocTot()"></div><div class="field" style="margin:0"><label>Prix u.</label><input type="number" value="${l.pu}" oninput="docLines[${i}].pu=+this.value;calcDocTot()"></div><button onclick="docLines.splice(${i},1);renderDocLines()" style="background:var(--red2);border:none;color:var(--red);border-radius:7px;padding:7px;cursor:pointer;margin-top:17px">✕</button></div></div>`).join('');calcDocTot();}
+function calcDocTot(){const t=docLines.reduce((a,l)=>a+l.qty*l.pu,0);const el=document.getElementById('dc-tot');if(el)el.textContent=fm(t);}
+function saveDoc(){const type=document.getElementById('dc-type').value;const total=docLines.reduce((a,l)=>a+l.qty*l.pu,0);const doc={id:curDocId||('D'+Date.now()),type,num:(type==='devis'?'DEV-':'FAC-')+String(docNum++).padStart(3,'0'),date:td(),client:document.getElementById('dc-cn').value,tel:document.getElementById('dc-ct').value,adr:document.getElementById('dc-ca').value,notes:document.getElementById('dc-no').value,valid:document.getElementById('dc-va').value,lines:[...docLines],total,status:type==='facture'?(document.getElementById('dc-cs').value||'pending'):'pending'};if(curDocId){const idx=docsData.findIndex(d=>d.id===curDocId);if(idx>=0)docsData[idx]=doc;}else docsData.push(doc);SA();closeDoc();rCenter('gest');toast('Sauvegardé ✓','g');}
+function shareDoc(m){const type=document.getElementById('dc-type').value;const client=document.getElementById('dc-cn').value;const total=docLines.reduce((a,l)=>a+l.qty*l.pu,0);const txt=`📄 ${type.toUpperCase()} — Synergy Horeca\n👤 ${client}\n💰 Total: ${fm(total)}\n📞 +216 20 910 909`;if(m==='wa')window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');else if(m==='fb')window.open('https://www.facebook.com/sharer/sharer.php?quote='+encodeURIComponent(txt),'_blank');else if(m==='ig')window.open('https://www.instagram.com/','_blank');else if(m==='gm')window.open('mailto:?body='+encodeURIComponent(txt),'_blank');else if(m==='tt')window.open('https://www.tiktok.com/','_blank');else if(m==='mk')window.open('https://www.tayara.tn','_blank');else if(m==='cp')navigator.clipboard?.writeText(txt).then(()=>toast('Copié ✓','g'));else if(m==='all')openShareSheet(txt);}
+function pickClient(){const el=document.createElement('div');el.className='overlay on';el.innerHTML=`<div class="sheet"><div class="sh-h"></div><div class="sh-t"><span>Choisir un client</span><span class="sh-x" onclick="this.closest('.overlay').remove()">✕</span></div><div style="padding:12px;max-height:60vh;overflow-y:auto">${contacts.filter(c=>c.type==='client').map(c=>`<div style="display:flex;align-items:center;gap:11px;padding:11px;background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:13px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('dc-cn').value='${c.nom}';document.getElementById('dc-ct').value='${c.tel||''}';this.closest('.overlay').remove()"><div class="avatar" style="background:${avi(c.nom)}">${ini(c.nom)}</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">${c.nom}</div><div style="font-size:10px;color:var(--text3)">${c.tel||''}</div></div></div>`).join('')}</div></div>`;document.body.appendChild(el);}
+
+// TOOLS
+function rTools(){const el=document.getElementById('tools-body');if(!el)return;const tools=[{u:'https://docs.google.com',i:'📝',n:'Google Docs',s:'GRATUIT'},{u:'https://sheets.google.com',i:'📊',n:'Google Sheets',s:'GRATUIT'},{u:'https://drive.google.com',i:'☁️',n:'Google Drive',s:'15GB GRATUIT'},{u:'https://canva.com',i:'🎨',n:'Canva',s:'Design GRATUIT'},{u:'https://trello.com',i:'✅',n:'Trello',s:'Tâches GRATUIT'},{u:'https://qr.io',i:'⬛',n:'QR Code',s:'Générateur GRATUIT'},{u:'https://wetransfer.com',i:'📤',n:'WeTransfer',s:'Envoi GRATUIT'},{u:'https://manychat.com',i:'🤖',n:'ManyChat',s:'Chatbot GRATUIT'},{u:'https://claude.ai',i:'🧠',n:'Claude AI',s:'IA GRATUIT'},{u:'https://chat.openai.com',i:'💡',n:'ChatGPT',s:'IA GRATUIT'},{u:'https://lens.google.com',i:'🔍',n:'Google Lens',s:'Identification GRATUIT'},{u:'https://maps.google.com',i:'🗺️',n:'Google Maps',s:'Navigation GRATUIT'}];el.innerHTML=tools.map(t=>`<a href="${t.u}" target="_blank" class="li"><div class="li-ico">${t.i}</div><div><div class="li-name">${t.n}</div><div class="li-sub">${t.s}</div></div></a>`).join('');}
+
+// NEWS
+function rNews(){const el=document.getElementById('news-body');if(!el)return;const src=[{u:'https://www.lapresse.tn',i:'📰',n:'La Presse TN',s:'Tunisie'},{u:'https://www.businessnews.com.tn',i:'💼',n:'Business News',s:'Économie'},{u:'https://www.mosaiquefm.net',i:'📻',n:'Mosaique FM',s:'Actualité'},{u:'https://www.aljazeera.net/ar',i:'🌙',n:'Al Jazeera',s:'عربي'},{u:'https://www.reuters.com',i:'🌍',n:'Reuters',s:'International'}];el.innerHTML=src.map(s=>`<a href="${s.u}" target="_blank" class="li"><div class="li-ico">${s.i}</div><div><div class="li-name">${s.n}</div><div class="li-sub">${s.s}</div></div></a>`).join('');}
+
+// RÉPERTOIRE
+function repTab(t){repTabA=t;['all','clients','fournisseurs'].forEach(x=>{document.getElementById('rt-'+x)?.classList.toggle('on',x===t)});const el=document.getElementById('rep-list');if(!el)return;let list=contacts;if(t==='clients')list=contacts.filter(c=>c.type==='client');else if(t==='fournisseurs')list=contacts.filter(c=>c.type==='fournisseur');if(!list.length){el.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">Aucun contact</div>';return;}el.innerHTML=list.map((c,i)=>`<div class="ct-row"><div class="avatar" style="background:${avi(c.nom)}">${ini(c.nom)}</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${c.nom}</div><div style="font-size:10px;color:var(--text3)">${c.zone||''} · ${c.type}</div><div style="font-size:10px;color:var(--text2)">${c.note||''}</div></div><div style="display:flex;gap:6px"><a href="tel:${c.tel}" style="width:32px;height:32px;border-radius:16px;background:var(--green2);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px">📞</a><a href="https://wa.me/${(c.tel||'').replace(/\D/g,'')}" target="_blank" style="width:32px;height:32px;border-radius:16px;background:rgba(37,211,102,.1);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px">💬</a></div></div>`).join('');}
+function openAddContact(){document.getElementById('ctf-id').value='';document.getElementById('ctf-n').value='';document.getElementById('ctf-t').value='';document.getElementById('ctf-z').value='';document.getElementById('ctf-no').value='';document.getElementById('sh-ct-t').textContent='Nouveau Contact';document.getElementById('sh-ct').classList.add('on');}
+function saveContact(){const nom=document.getElementById('ctf-n').value.trim();if(!nom){toast('Nom requis','r');return;}contacts.push({id:Date.now(),nom,tel:document.getElementById('ctf-t').value,zone:document.getElementById('ctf-z').value,type:document.getElementById('ctf-ty').value,note:document.getElementById('ctf-no').value});SA();closeOverlays();repTab(repTabA);toast('Contact ajouté ✓','g');}
+
+// CALC
+function cf(v){const exEl=document.getElementById('cx');const vEl=document.getElementById('cv');if(!vEl)return;const cur=vEl.textContent;if(v==='ac'){cexpr='';cnew=true;vEl.textContent='0';if(exEl)exEl.textContent='';return;}if(v==='+/-'){vEl.textContent=String(+cur*-1);return;}if(v==='%'){vEl.textContent=String(+cur/100);return;}if(['/','+','-','*'].includes(v)){cexpr=cur+v;cnew=true;if(exEl)exEl.textContent=cexpr;return;}if(v==='='){if(exEl)exEl.textContent=cexpr+cur;try{const r=Function('"use strict";return('+cexpr+cur+')')();vEl.textContent=String(Math.round(r*10000)/10000);}catch{vEl.textContent='Erreur';}cexpr='';cnew=true;return;}if(v==='.'){if(cnew){vEl.textContent='0.';cnew=false;return;}if(!cur.includes('.'))vEl.textContent=cur+'.';return;}if(cnew){vEl.textContent=v;cnew=false;}else{vEl.textContent=cur==='0'?v:cur+v;}}
+function calcM(){const c=+document.getElementById('mc').value||0,p=+document.getElementById('mp').value||0;const mr=document.getElementById('mr');if(!mr)return;if(!c&&!p){mr.style.display='none';return;}const mg=p-c;const pct=c>0?Math.round(mg/c*100):0;mr.style.display='block';mr.textContent=(mg>0?'+':'')+fm(mg)+' ('+pct+'%)';mr.style.color=mg>0?'var(--green)':'var(--red)';}
+
+// CONFIG
+function rCfg(){const el=document.getElementById('cfg-body');if(!el)return;const inst=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;el.innerHTML=`<div style="padding:14px">${!inst?`<div onclick="showInstallBanner()" style="background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;margin-bottom:12px;cursor:pointer"><div style="font-size:26px">📲</div><div style="flex:1"><div style="font-size:15px;font-weight:700;color:#fff">Installer l'application</div><div style="font-size:10px;color:rgba(255,255,255,.75);margin-top:2px">Ajouter à l'écran d'accueil</div></div><div style="color:rgba(255,255,255,.7);font-size:18px">›</div></div>`:`<div style="background:var(--green2);border:0.5px solid rgba(34,197,94,.2);border-radius:13px;padding:13px;display:flex;align-items:center;gap:11px;margin-bottom:12px"><div style="font-size:22px">✅</div><div style="font-size:12px;font-weight:600;color:var(--green)">Application installée !</div></div>`}
+<div class="card" style="margin-bottom:12px"><div class="card-hd"><span class="card-t">📱 WhatsApp</span></div><div class="card-bd"><div class="field" style="margin-bottom:0"><label>Numéro</label><input value="${CF.wa||''}" onchange="CF.wa=this.value;SA()"></div></div></div>
+<div class="card" style="margin-bottom:12px"><div class="card-hd"><span class="card-t">💾 Données</span></div><div class="card-bd" style="display:flex;flex-direction:column;gap:8px"><button class="btn btn-ghost btn-full" onclick="exportData()">📤 Exporter</button><button class="btn btn-ghost btn-full" onclick="document.getElementById('imp-f').click()">📥 Importer</button><input type="file" id="imp-f" accept=".json" style="display:none" onchange="importData(this)"></div></div>
+<div style="text-align:center;padding:14px;color:var(--text3);font-size:10px">SYNERGY HORECA V5 · DARK GOLD · OPTION C</div></div>`;}
+
+function exportData(){const d={SD,VD,CF,notes,contacts,docsData};const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='synergy-v5-backup-'+td()+'.json';a.click();toast('Export réussi ✓','g');}
+function importData(inp){const fr=new FileReader();fr.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.SD)SD=d.SD;if(d.VD)VD=d.VD;if(d.notes)notes=d.notes;if(d.contacts)contacts=d.contacts;if(d.docsData)docsData=d.docsData;if(d.CF)CF=d.CF;SA();rCenter('home');buildCatBg();toast('Import réussi ✓','g');}catch{toast('Fichier invalide','r');}};fr.readAsText(inp.files[0]);}
+
+// BACK/EXIT
+window.addEventListener('popstate',()=>{
+  history.pushState(null,'',location.href);
+  if(document.getElementById('m-doc').style.display==='flex'){closeDoc();return;}
+  const ov=document.querySelector('.overlay.on');if(ov){ov.classList.remove('on');return;}
+  const dlg=document.querySelector('.dialog.on');if(dlg){dlg.classList.remove('on');return;}
+  const fp=document.querySelector('.fpanel.on');if(fp){fp.classList.remove('on');curFP=null;return;}
+  if(document.getElementById('cat-full').classList.contains('on')){closeCatFull();return;}
+  exitCount++;
+  if(exitCount===1){toast('Appuyer encore pour quitter');exitTimer=setTimeout(()=>exitCount=0,2500);}
+  else{clearTimeout(exitTimer);exitCount=0;document.getElementById('dlg-exit').classList.add('on');}
+});
+history.pushState(null,'',location.href);
+
+// PWA
+let _prompt=null;
+const _ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const _safari=/safari/i.test(navigator.userAgent)&&!/chrome|crios|fxios/i.test(navigator.userAgent);
+const _installed=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_prompt=e;if(!_installed)showInstallBanner();});
+window.addEventListener('appinstalled',()=>{hideBanner();_prompt=null;toast('✅ Application installée !','g');});
+function showInstallBanner(){const b=document.getElementById('inst-b');if(!b||_installed)return;if(_ios&&_safari){document.getElementById('ib-sub').textContent='Suivez les étapes ci-dessous';document.getElementById('ios-g').style.display='block';document.getElementById('ib-btn').style.display='none';}else if(_ios){document.getElementById('ib-sub').textContent='⚠️ Ouvrez dans Safari pour installer';document.getElementById('ib-btn').style.display='none';}b.style.display='block';}
+function hideBanner(){const b=document.getElementById('inst-b');if(b)b.style.display='none';}
+async function doInstall(){if(!_prompt)return;document.getElementById('ib-btn').textContent='⏳...';try{await _prompt.prompt();const{outcome}=await _prompt.userChoice;if(outcome!=='accepted')document.getElementById('ib-btn').textContent='Installer ↓';}catch{document.getElementById('ib-btn').textContent='Installer ↓';}  _prompt=null;}
+
+// Manifest + SW inline
+// manifest via fichier externe
+
+// Service Worker pour installation PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(r => console.log('[SW] OK', r.scope))
+      .catch(e => console.log('[SW] Skip:', e.message));
+  });
+}
+
+
+// INIT
+function initApp(){
+  updateClock();setInterval(updateClock,10000);
+  updatePrayer();setInterval(updatePrayer,60000);
+  buildCatBg();startBgRotation();
+  rCenter('home');
+  rTools();rNews();
+  setTimeout(()=>{if(!_installed)showInstallBanner();},1500);
+}
+setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('out');setTimeout(()=>{s.style.display='none';const m=document.getElementById('main');m.style.display='flex';m.classList.add('on');initApp();},900);},5200);
+</script>
+</body>
+</html>
